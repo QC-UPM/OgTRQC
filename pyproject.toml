@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "octa-gtrqc-sim"
+version = "0.1.0"
+description = "Proof of Concept simulation for Octahedral gTRQC hydrogenated nickelate memory"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyyaml = "^6.0.1"
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
