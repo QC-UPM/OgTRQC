@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 import yaml
+from octa_gtrqc_sim.reports import PlotlyHtmlView, MarkdownReportView
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -153,6 +154,7 @@ class OctaMemoryModel:
         return {
             "rho": self.rho,
             "distortion": structural_distortion,
+            "raw_source": raw_source,
             "j_eff": j_eff,
             "j_0": j_0
         }
@@ -268,15 +270,29 @@ class SimulationPresenter:
 
         # Goal 1 & 2: Structural Update Loop Coupling Dynamics Exploration
         self.view.show_message("running_goal", goal="1 & 2", desc="Octahedral Register Construction & Geometric Coupling")
-        steps = self.config.get("simulation_steps", 5)
-        voltage_profile = self.config.get("voltage_profile", [1.0] * steps)
-        recoverability_loss = self.config.get("recoverability_loss_profile", [0.2] * steps)
+        total_steps = self.config.get("simulation_steps", 5)
+        voltage_profile = self.config.get("voltage_profile", [1.0] * total_steps)
+        recoverability_loss = self.config.get("recoverability_loss_profile", [0.2] * total_steps)
 
-        for i in range(steps):
+        step_axis: List[int] = []
+        history_voltages: List[float] = []
+        history_rhos: List[float] = []
+        history_distortions: List[float] = []
+        history_raw_sources: List[float] = []
+        history_eff_sources: List[float] = []
+
+        for i in range(total_steps):
             v_t = voltage_profile[i] if i < len(voltage_profile) else 0.5
             delta_0 = recoverability_loss[i] if i < len(recoverability_loss) else 0.1
             
             metrics = self.model.step(v_t, delta_0)
+            step_axis.append(i + 1)
+            history_voltages.append(v_t)
+            history_rhos.append(metrics["rho"])
+            history_distortions.append(metrics["distortion"])
+            history_raw_sources.append(metrics["raw_source"])
+            history_eff_sources.append(metrics["j_eff"])
+
             self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], dist=metrics["distortion"])
 
         # Goal 4: Entropic Capacity Analysis Frameworks Execution
@@ -288,8 +304,8 @@ class SimulationPresenter:
         # Goal 5: Structural Null-Test Preservation Analysis
         self.view.show_message("running_goal", goal="5", desc="Null-Test Preservation Verification")
         null_model = OctaMemoryModel(self.config)
-        # Forcing operational condition where recovery loss Delta_0 equals zero
         null_metrics = null_model.step(V_t=1.0, delta_0=0.0)
+
         if math.isclose(null_metrics["j_eff"], 0.0, abs_tol=1e-7) and math.isclose(null_metrics["j_0"], 0.0, abs_tol=1e-7):
             self.view.show_message("null_test_pass")
         else:
@@ -300,6 +316,43 @@ class SimulationPresenter:
         final_state["final_capacity_estimation"] = capacity
         self.view.render_results(final_state)
         self.view.show_message("done")
+
+        # Reporting 
+        target_dir = self.config.get("output_directory", "reports")
+        plotly_view = PlotlyHtmlView(output_dir=target_dir)
+
+        # Renderizar los HTMLs pasándole las listas 
+        # acumuladas durante el bucle
+        p1 = plotly_view.generate_goals_1_2_chart(step_axis, history_voltages, 
+                        history_rhos, history_distortions)
+        p2 = plotly_view.generate_goal_3_chart(step_axis, 
+                        history_raw_sources, history_eff_sources)
+
+        # Para la capacidad (Goal 4) se puede muestrear rápidamente 
+        # un barrido de epsilons:
+        eps_axis: List[float] = self.config.get("goal_4_epsilon_sweep", 
+                        [0.1, 0.05, 0.02, 0.01, 0.005])
+
+        # 2. Evaluamos la capacidad dinámica del modelo para cada resolución configurada
+        cap_axis: List[float] = [self.model.calculate_capacity(e) 
+                        for e in eps_axis]
+        p3 = plotly_view.generate_goal_4_chart(eps_axis, cap_axis)
+        
+        print(f"Interactive reports compiled successfully inside ./{plotly_view.output_dir}/ directory!")
+        eps_sweep = self.config.get("goal_4_epsilon_sweep", [0.1, 0.05, 0.02, 0.01])
+        capacity_results = {e: self.model.calculate_capacity(e) for e in eps_sweep}
+        md_logger = MarkdownReportView(output_dir=target_dir)
+        md_file_created = md_logger.write_summary_report(
+            config=self.config,
+            steps=step_axis,
+            voltages=history_voltages,
+            rhos=history_rhos,
+            distortions=history_distortions,
+            capacity_sweep=capacity_results,
+            final_state=final_state
+        )
+
+        print(f"Tabular summary written successfully to: {md_file_created}")
 
 
 # =============================================================================
@@ -318,12 +371,17 @@ def main() -> None:
         "-c", "--config", type=str, default=None,
         help="Optional external path specifying target YAML parameters datasets location."
     )
+    parser.add_argument(
+        "-o", "--output", type=str, default=None,
+        help="Target directory where interactive HTML chart reports will be saved."
+    )
 
     args = parser.parse_args()
     view = CLIView(lang=args.lang)
 
     # Establish baseline defaults parameters fallback values dictionary mappings
     default_config: Dict[str, Any] = {
+        "output_directory": "reports",
         "simulation_steps": 6,
         "g_oct_stiffness": 3.0,
         "protonic_delay_steps": 2,
@@ -354,3 +412,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
