@@ -255,7 +255,7 @@ voltage_profile: [1.0, 1.5, 1.2, 0.8, 0.4, 0.0]
 recoverability_loss_profile: [0.1, 0.2, 0.3, 0.2, 0.1, 0.0]
 ```
 
-## 7. Verification of Paper Simulation Goals
+## 7. Verification of Simulation Goals
 
 Goal 1: Octa Register Construction - Verifies successful mapping of the $NiO_6$ structural environment into state space registers using strong typing models.
 
