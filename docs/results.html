@@ -23,6 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Comparative Analysis of Simulation Engines" href="comparative.html" />
     <link rel="prev" title="Software Architecture &amp; Engineering Blueprints" href="software.html" /> 
 </head>
 
@@ -47,14 +48,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture &amp; Engineering Blueprints</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Simulated Data Diagnostics and Analytical Interpretation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#matter-geometry-evolution-vector-goals-1-2">Matter-Geometry Evolution Vector (Goals 1 &amp; 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matter-geometry-evolution-vector">Matter-Geometry Evolution Vector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#kolmogorov-entropy-scaling-goal-4">Kolmogorov Entropy Scaling (Goal 4)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-test-conservation-validation-goal-5">Null-Test Conservation Validation (Goal 5)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
 </ul>
 
         </div>
@@ -83,9 +85,10 @@
              
   <section id="simulated-data-diagnostics-and-analytical-interpretation">
 <h1>Simulated Data Diagnostics and Analytical Interpretation<a class="headerlink" href="#simulated-data-diagnostics-and-analytical-interpretation" title="Link to this heading"></a></h1>
-<section id="matter-geometry-evolution-vector-goals-1-2">
-<h2>Matter-Geometry Evolution Vector (Goals 1 &amp; 2)<a class="headerlink" href="#matter-geometry-evolution-vector-goals-1-2" title="Link to this heading"></a></h2>
-<p>The actual data exported by the simulation run demonstrates the interaction between structural unit distortions and the decay trajectories of the quantum metrics:</p>
+<section id="matter-geometry-evolution-vector">
+<h2>Matter-Geometry Evolution Vector<a class="headerlink" href="#matter-geometry-evolution-vector" title="Link to this heading"></a></h2>
+<p>The actual data exported by the simulation run demonstrates the interaction between structural unit distortions and the decay trajectories of the quantum metrics. When utilizing the legacy phenomenological engine, driving the model with high potential fields initially reduces quantum coherence from an ideal state to a stabilized lower bound. This drop acts as an informational sink that distorts the local cage configuration with a noticeable delay, causing the structural distortion metric to scale upward sequentially from its baseline. This confirms that the crystal network stores structural evidence of previous state manipulations.</p>
+<p>In contrast, the rigorous quantum integrator evaluates the macroscopic conductance through the trace expectation value of the current operator applied to the density matrix. Under identical voltage profiles and recoverability loss parameters, the quantum matrix proxy exhibits a far more constrained evolution, stabilizing at approximately 0.0561, while the octahedral distortion resolves distinct non-Markovian hysteresis loops reflecting true geometric rigidity.</p>
 <table class="docutils align-default" id="id1">
 <caption><span class="caption-text">Matter-Geometry Quantum Coupling Timeline Trajectory</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
 <colgroup>
@@ -138,11 +141,12 @@
 </section>
 <section id="kolmogorov-entropy-scaling-goal-4">
 <h2>Kolmogorov Entropy Scaling (Goal 4)<a class="headerlink" href="#kolmogorov-entropy-scaling-goal-4" title="Link to this heading"></a></h2>
-<p>Evaluating the system memory capacity under a strict resolution boundary condition of <span class="math notranslate nohighlight">\(\epsilon = 0.02\)</span> yields an atomic state limit of <strong>3.2581</strong>.</p>
+<p>Evaluating the system memory capacity under a strict resolution boundary condition yields insightful limits on atomic information capability. The legacy model computes a capacity of approximately 3.2581 for a base threshold. However, under the quantum matrix formulation, the calculated Kolmogorov Atom Capacity increases to 3.8501 for the same resolution boundary. When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.</p>
 <p>When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.</p>
 </section>
 <section id="null-test-conservation-validation-goal-5">
 <h2>Null-Test Conservation Validation (Goal 5)<a class="headerlink" href="#null-test-conservation-validation-goal-5" title="Link to this heading"></a></h2>
+<p>Passing the null-preservation test brings an experimental robustness to the model that is highly attractive from an academic standpoint. In both the legacy and quantum engines, the system successfully passes the structural null-test requirements. Setting the recoverability loss parameter strictly to zero prevents any changes in the structural driving forces. The dynamic source vanishes cleanly, proving that the model does not generate non-physical lattice modifications in the absence of input energy and that the memory effect is causally linked to the hidden protonic polarons.</p>
 <p>The system passed the structural null-test requirements (<strong>Passed</strong>). Setting the recoverability loss parameter strictly to zero (<span class="math notranslate nohighlight">\(\Delta_0 = 0\)</span>) prevents any changes in the structural driving forces (<span class="math notranslate nohighlight">\(J_0 \to 0\)</span> and <span class="math notranslate nohighlight">\(J_{eff} \to 0\)</span>). This validates the mathematical framework, proving that the model does not generate non-physical lattice modifications in the absence of input energy.</p>
 </section>
 </section>
@@ -152,6 +156,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="software.html" class="btn btn-neutral float-left" title="Software Architecture &amp; Engineering Blueprints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="comparative.html" class="btn btn-neutral float-right" title="Comparative Analysis of Simulation Engines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

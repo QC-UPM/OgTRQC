@@ -459,7 +459,7 @@ window.runMermaid = runMermaid;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Simulated Data Diagnostics and Analytical Interpretation" href="results.html" />
-    <link rel="prev" title="Theoretical Framework: gTRQC in \(H_xNdNiO_3\) Heterostructures" href="theory.html" /> 
+    <link rel="prev" title="Theoretical Framework: gTRQC in Heterostructures" href="theory.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -483,14 +483,15 @@ window.runMermaid = runMermaid;</script>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Software Architecture &amp; Engineering Blueprints</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#uml-class-diagram">UML Class Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#engine-class-hierarchy-diagram">Engine Class Hierarchy Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#legacy-versus-quantum-integration-flow">Legacy versus Quantum Integration Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#execution-sequence-flow">Execution Sequence Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-pipelines-and-closed-loop-feedback">Data Pipelines and Closed-Loop Feedback</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
 </ul>
 
         </div>
@@ -519,95 +520,90 @@ window.runMermaid = runMermaid;</script>
              
   <section id="software-architecture-engineering-blueprints">
 <h1>Software Architecture &amp; Engineering Blueprints<a class="headerlink" href="#software-architecture-engineering-blueprints" title="Link to this heading"></a></h1>
-<p>The execution engine is structured using a strict <strong>Model-View-Presenter (MVP)</strong> decoupling paradigm built on Python 3.12. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers.</p>
-<section id="uml-class-diagram">
-<h2>UML Class Diagram<a class="headerlink" href="#uml-class-diagram" title="Link to this heading"></a></h2>
-<p>The relationships, inherited structures, and operational boundaries of the software components are mapped out below:</p>
+<p>The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python 3.12. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The architectural evolution of this suite introduces a factory pattern within the presentation layer. Depending on the execution parameters, the presenter dynamically binds to either the legacy phenomenological model or the rigorous quantum density matrix integrator, both sharing a common public interface.</p>
+<section id="engine-class-hierarchy-diagram">
+<h2>Engine Class Hierarchy Diagram<a class="headerlink" href="#engine-class-hierarchy-diagram" title="Link to this heading"></a></h2>
+<p>The relationships, inherited structures, and operational boundaries of the software components are mapped out below, demonstrating the implementation of the dual-engine architecture.</p>
 <pre  class="mermaid">
         classDiagram
-   class OctaMemoryModel {
-       +float rho
-       +float g_oct
-       +int delay_steps
-       +dict register_state
+   class MaterialRegister {
+       +float theta_tilt
+       +float theta_rot
+       +float delta_V_oct
+       +float delta_phi
+       +float epsilon_0
+       +to_vector() list
+   }
+   class IMemoryModel {
+       &lt;&lt;interface&gt;&gt;
        +step(V_t, delta_0) dict
        +calculate_capacity(epsilon) float
        +get_state() dict
    }
-   class BaseView {
-       &lt;&lt;interface&gt;&gt;
-       +show_message(msg_id, **kwargs)* void
-       +render_results(results_dict)* void
+   class OctaMemoryModel {
+       &lt;&lt;Legacy Phenomenological&gt;&gt;
+       -float rho_scalar
+       +step(V_t, delta_0) dict
    }
-   class CLIView {
-       +str lang
-       +dict i18n_dict
-       +show_message(msg_id, **kwargs) void
-       +render_results(results_dict) void
+   class QuantumMemoryModel {
+       &lt;&lt;Rigorous Von Neumann&gt;&gt;
+       -ndarray rho_matrix
+       +step(V_t, delta_0) dict
    }
+   IMemoryModel &lt;|.. OctaMemoryModel
+   IMemoryModel &lt;|.. QuantumMemoryModel
+   OctaMemoryModel --&gt; MaterialRegister
+   QuantumMemoryModel --&gt; MaterialRegister
    class SimulationPresenter {
-       +dict config
-       +OctaMemoryModel model
-       +BaseView view
-       +run_simulation() void
+       -IMemoryModel model
+       +run_simulation()
    }
-   class PlotlyHtmlView {
-       +str output_dir
-       +generate_goals_1_2_chart() str
-       +generate_goal_3_chart() str
-       +generate_goal_4_chart() str
-   }
-   class MarkdownReportView {
-       +str output_dir
-       +write_summary_report() str
-   }
-
-   BaseView &lt;|.. CLIView
-   SimulationPresenter --&gt; OctaMemoryModel : orchestrates
-   SimulationPresenter --&gt; BaseView : updates
-   SimulationPresenter ..&gt; PlotlyHtmlView : instantiates for HTML generation
-   SimulationPresenter ..&gt; MarkdownReportView : instantiates for log files
+   SimulationPresenter --&gt; IMemoryModel
+    </pre></section>
+<section id="legacy-versus-quantum-integration-flow">
+<h2>Legacy versus Quantum Integration Flow<a class="headerlink" href="#legacy-versus-quantum-integration-flow" title="Link to this heading"></a></h2>
+<p>The transformation matrix routing for data tracking during model updates diverges based on the selected mathematical engine. The following flowchart compares the legacy phenomenological approximation against the strict quantum integration loop.</p>
+<pre  class="mermaid">
+        graph TD
+   Start((Time Step Evaluation)) --&gt; Fork{Selected Engine}
+   Fork --&gt;|Legacy| L1[Retrieve scalar delayed source from list buffer]
+   L1 --&gt; L2[Compute linear structural projection]
+   L2 --&gt; L3[Update discrete vector parameters]
+   L3 --&gt; L4[Apply bounded scalar CPTP proxy map to rho]
+   L4 --&gt; EndLegacy((Return Scalar Metrics))
+   Fork --&gt;|Quantum| Q1[Extract delayed thermodynamic source from deque buffer]
+   Q1 --&gt; Q2[Solve differential response of the curvature register]
+   Q2 --&gt; Q3[Build Hamiltonian matrix with applied voltage and geometric perturbation]
+   Q3 --&gt; Q4[Compute complex commutator]
+   Q4 --&gt; Q5[Execute von Neumann integration step over dt]
+   Q5 --&gt; Q6[Apply trace-preserving projection to density matrix]
+   Q6 --&gt; Q7[Extract macroscopic conductance from current operator trace]
+   Q7 --&gt; EndQuantum((Return Tensor Metrics))
     </pre></section>
 <section id="execution-sequence-flow">
 <h2>Execution Sequence Flow<a class="headerlink" href="#execution-sequence-flow" title="Link to this heading"></a></h2>
-<p>The timeline interaction model for a discrete operational simulation window maps onto the following execution trace:</p>
+<p>The timeline interaction model for a discrete operational simulation window maps onto the following execution trace, showcasing the dynamic factory instantiation.</p>
 <pre  class="mermaid">
         sequenceDiagram
    autonumber
-   participant M as Main (CLI Entry)
-   participant P as SimulationPresenter
-   participant Mod as OctaMemoryModel
-   participant V as CLIView
-
-   M-&gt;&gt;P: run_simulation()
-   loop Over Configured Simulation Timeline Steps (1 to N)
-       P-&gt;&gt;Mod: step(V_t, delta_0)
-       activate Mod
-       Mod-&gt;&gt;Mod: Compute local geometric distortion mechanics
-       Mod-&gt;&gt;Mod: Process history buffers for Protonic Latency (J_eff)
-       Mod-&gt;&gt;Mod: Adjust Quantum Coherence Index (rho)
-       Mod--&gt;&gt;P: Step Metrics Payload Dictionary
-       deactivate Mod
-       P-&gt;&gt;V: show_message(&quot;sim_step&quot;, index, V_t, rho, distortion)
-       V--&gt;&gt;P: Terminal feedback rendering
+   Participant CLI as Main Terminal
+   Participant P as SimulationPresenter
+   Participant M as Selected Memory Model
+   Participant V as Execution View
+   CLI -&gt;&gt; P: Initialize Framework passing configuration
+   P -&gt;&gt; V: Display localized greeting
+   P -&gt;&gt; M: Instantiate required physical engine via Factory
+   loop Discretized Temporal Integration
+       P -&gt;&gt; M: step(Voltage, Recoverability Loss)
+       M -&gt;&gt; M: Update material register using delay buffer
+       M -&gt;&gt; M: Evolve quantum state representation
+       M --&gt;&gt; P: Return observable thermodynamic metrics
+       P -&gt;&gt; V: Output localized step telemetry
    end
-   P-&gt;&gt;Mod: calculate_capacity(epsilon)
-   Mod--&gt;&gt;P: Computed C_atom value
-   P-&gt;&gt;V: render_results(final_state)
-    </pre></section>
-<section id="data-pipelines-and-closed-loop-feedback">
-<h2>Data Pipelines and Closed-Loop Feedback<a class="headerlink" href="#data-pipelines-and-closed-loop-feedback" title="Link to this heading"></a></h2>
-<p>The transformation matrix routing for data tracking during model updates follows this logical flow:</p>
-<pre  class="mermaid">
-        graph TD
-   A[Input Parameters: Voltage V_t &amp; Recoverability loss delta_0] --&gt; B(Lattice Elastic Response Module)
-   B --&gt; C{Is History Index &gt;= delay_steps?}
-   C -- Yes --&gt; D[Incorporate Protonic Retardation Feedback Loop]
-   C -- No --&gt; E[Assign Pure Instantaneous J_eff Vector]
-   D --&gt; F[Execute Distortion Field Matrix Updates]
-   E --&gt; F
-   F --&gt; G[Recompute Coherence State Variable rho_t]
-   G --&gt; H[Export Metrics Payloads &amp; Buffer History Arrays]
+   P -&gt;&gt; M: calculate_capacity(epsilon bounds)
+   M --&gt;&gt; P: Return Kolmogorov memory capacity
+   P -&gt;&gt; V: render_results(final_state_summary)
+   V --&gt;&gt; CLI: Generate HTML reports and Markdown tabular data
     </pre></section>
 </section>
 
@@ -615,7 +611,7 @@ window.runMermaid = runMermaid;</script>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="theory.html" class="btn btn-neutral float-left" title="Theoretical Framework: gTRQC in \(H_xNdNiO_3\) Heterostructures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-left" title="Theoretical Framework: gTRQC in Heterostructures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="results.html" class="btn btn-neutral float-right" title="Simulated Data Diagnostics and Analytical Interpretation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

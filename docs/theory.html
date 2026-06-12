@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Theoretical Framework: gTRQC in \(H_xNdNiO_3\) Heterostructures &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
+  <title>Theoretical Framework: gTRQC in Heterostructures &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/custom_upm.css" />
@@ -48,14 +48,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#generalized-time-recoverable-quantum-control-gtrqc">Generalized Time-Recoverable Quantum Control (gTRQC)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theoretical Framework: gTRQC in Heterostructures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generalized-time-recoverable-quantum-control">Generalized Time-Recoverable Quantum Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lattice-distortion-and-protonic-latency-coupling">Lattice Distortion and Protonic Latency Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#kolmogorov-tikhomirov-metric-entropy-bounds">Kolmogorov-Tikhomirov Metric Entropy Bounds</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture &amp; Engineering Blueprints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
 </ul>
 
         </div>
@@ -72,7 +73,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</li>
+      <li class="breadcrumb-item active">Theoretical Framework: gTRQC in Heterostructures</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -82,33 +83,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="theoretical-framework-gtrqc-in-h-xndnio-3-heterostructures">
-<h1>Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures<a class="headerlink" href="#theoretical-framework-gtrqc-in-h-xndnio-3-heterostructures" title="Link to this heading"></a></h1>
-<section id="generalized-time-recoverable-quantum-control-gtrqc">
-<h2>Generalized Time-Recoverable Quantum Control (gTRQC)<a class="headerlink" href="#generalized-time-recoverable-quantum-control-gtrqc" title="Link to this heading"></a></h2>
-<p>The framework of Generalized Time-Recoverable Quantum Control (<strong>gTRQC</strong>) provides a closed-loop algebraic paradigm designed to model the non-Markovian feedback loops that occur between quantum matter states and localized structural crystal matrices.</p>
-<p>In this architectural suite, the host unit cell is mathematically modeled as an isolated <span class="math notranslate nohighlight">\(NiO_6\)</span> octahedral geometry graph. The six vertices denote oxygen ligated positions (<span class="math notranslate nohighlight">\(O^{2-}\)</span>) defining the electronic field, while the central coordination position acts as the active Nickel (<span class="math notranslate nohighlight">\(Ni\)</span>) electronic system center. Its orbital configuration, valence state, and polaronic correlations constitute the active non-volatile register.</p>
+  <section id="theoretical-framework-gtrqc-in-heterostructures">
+<h1>Theoretical Framework: gTRQC in Heterostructures<a class="headerlink" href="#theoretical-framework-gtrqc-in-heterostructures" title="Link to this heading"></a></h1>
+<section id="generalized-time-recoverable-quantum-control">
+<h2>Generalized Time-Recoverable Quantum Control<a class="headerlink" href="#generalized-time-recoverable-quantum-control" title="Link to this heading"></a></h2>
+<p>The framework of Generalized Time-Recoverable Quantum Control provides a closed-loop algebraic paradigm designed to model the non-Markovian feedback loops that occur between quantum matter states and localized structural crystal matrices. In this architectural suite, the host unit cell is mathematically modeled as an isolated octahedral geometry graph. The six vertices denote oxygen ligated positions defining the electronic field, while the central coordination position acts as the active Nickel electronic system center. Its orbital configuration, valence state, and polaronic correlations constitute the active non-volatile register.</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{H}_{cell} = \mathcal{H}_{Ni} \otimes \mathcal{H}_{O6} \otimes \ell^2(\Omega_H) \otimes \ell^2(\Omega_{oct})\]</div>
-<p>Where <span class="math notranslate nohighlight">\(\Omega_H\)</span> defines the bounded configuration spaces of localized proton-polaron interstitial anomalies and <span class="math notranslate nohighlight">\(\Omega_{oct}\)</span> represents the tensor space of discrete octahedral lattice states.</p>
+<p>Where the first omega defines the bounded configuration spaces of localized proton-polaron interstitial anomalies and the second omega represents the tensor space of discrete octahedral lattice states.</p>
 </section>
 <section id="lattice-distortion-and-protonic-latency-coupling">
 <h2>Lattice Distortion and Protonic Latency Coupling<a class="headerlink" href="#lattice-distortion-and-protonic-latency-coupling" title="Link to this heading"></a></h2>
-<p>The quantum coherence parameter of the device state matrix (<span class="math notranslate nohighlight">\(\rho\)</span>) evolves dynamically driven by external electrical stimulation protocols <span class="math notranslate nohighlight">\(V(t)\)</span> combined with localized microstrain fields.</p>
-<p>Mechanical deviations in the coordination environment—parameterized by tilt components (<span class="math notranslate nohighlight">\(\theta_{tilt}\)</span>), rotative deflections (<span class="math notranslate nohighlight">\(\theta_{rot}\)</span>), and volume expansions (<span class="math notranslate nohighlight">\(\Delta V_{oct}\)</span>)—experience structural feedback driven by the instantaneous quantum recoverability loss metric <span class="math notranslate nohighlight">\(\Delta_0(t)\)</span>.</p>
-<p>The foundational raw driving force source of structural geometric strain <span class="math notranslate nohighlight">\(J_0(t)\)</span> is formalized as follows:</p>
+<p>A second axis of methodological and physical novelty centers on the algorithmic demonstration of non-Markovian memory based on protonic latency. Most models of neuromorphic or memristive devices introduce hysteresis behavior by forcing ad hoc temporal decay functions or empirical parameters. The approach presented here breaks with this convention by implementing a strict topological delay buffer that represents the true thermodynamic inertia of hydrogen defects. By comparing the curves of the initial phenomenological version with those of the quantum integrator, it can be argued that the separation of observable trajectories is not a mathematical artifact, but a deterministic consequence of structural rigidity against a delayed backreaction source.</p>
+<p>Mechanical deviations in the coordination environment experience structural feedback driven by the instantaneous quantum recoverability loss metric. The foundational raw driving force source of structural geometric strain is formalized as follows:</p>
 <div class="math notranslate nohighlight">
 \[J_0(t) = \Delta_0(t) \cdot g_{oct}\]</div>
-<p>Where <span class="math notranslate nohighlight">\(g_{oct}\)</span> serves as the graphistic stiffness modifier of the crystal environment. Protonic latency—caused by spatial transport delays of structural interstitial hydrogen defects—introduces non-instantaneous retroactivity modeled via an explicit step delay loop <span class="math notranslate nohighlight">\(d_{elay}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[J_{eff}(t) = J_0(t) - \kappa \cdot J_0(t - d_{elay})\]</div>
+<p>Protonic latency introduces non-instantaneous retroactivity modeled via an explicit step delay loop. In the quantum integration engine, this structural distortion is coupled directly to the local Hamiltonian, altering the electronic hopping integrals and forcing the density matrix to evolve via a trace-preserving commutator integration.</p>
 </section>
 <section id="kolmogorov-tikhomirov-metric-entropy-bounds">
 <h2>Kolmogorov-Tikhomirov Metric Entropy Bounds<a class="headerlink" href="#kolmogorov-tikhomirov-metric-entropy-bounds" title="Link to this heading"></a></h2>
-<p>Following the functional space mapping principles defined by Kolmogorov and Tikhomirov (1961) regarding the metric <span class="math notranslate nohighlight">\(\epsilon\)</span>-capacity of continuous sets, the absolute information capability metric of the atomic register element (<span class="math notranslate nohighlight">\(C_{atom}(\epsilon)\)</span>) is evaluated through the grouping cardinality of protonic trajectory sets that remain functionally indistinguishable given a resolution threshold <span class="math notranslate nohighlight">\(\epsilon\)</span>:</p>
+<p>The third strong point brought by this development is the application of Kolmogorov-Tikhomirov entropy to quantify storage capacity. Typically, the capacity of a material memory is evaluated by counting discrete and statically distinguishable resistance states. The proposed simulation poses a profound paradigm shift by measuring capacity through the analysis of the number of equivalence classes of hidden configurations that are currently indistinguishable, but will produce divergent responses in the future above a given instrumental resolution threshold.</p>
 <div class="math notranslate nohighlight">
 \[C_{atom}(\epsilon) = \log_2(N_\epsilon)\]</div>
-<p>Where <span class="math notranslate nohighlight">\(N_\epsilon\)</span> denotes the total available subset of stable spatial configurations of hydrogen polarons whose future memory readback signals are separated by a minimum Euclidean distance of <span class="math notranslate nohighlight">\(\epsilon\)</span>.</p>
+<p>Where N denotes the total available subset of stable spatial configurations of hydrogen polarons whose future memory readback signals are separated by a minimum Euclidean distance dictated by the resolution boundary.</p>
 </section>
 </section>
 

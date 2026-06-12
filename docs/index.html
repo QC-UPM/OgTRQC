@@ -23,7 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Theoretical Framework: gTRQC in \(H_xNdNiO_3\) Heterostructures" href="theory.html" /> 
+    <link rel="next" title="Theoretical Framework: gTRQC in Heterostructures" href="theory.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,9 +47,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture &amp; Engineering Blueprints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
 </ul>
 
         </div>
@@ -78,44 +79,43 @@
              
   <section id="octahedral-gtrqc-simulation-suite-documentation">
 <h1>Octahedral gTRQC Simulation Suite Documentation<a class="headerlink" href="#octahedral-gtrqc-simulation-suite-documentation" title="Link to this heading"></a></h1>
+<p>The narrative thread of this Proof of Concept, inspired by the ideas presented by Villalva-Díez J. in their document regarding hydrogenated nickelate memory, focuses on presenting a validated computational architecture that redefines the understanding of memory in strongly correlated materials. This approach seeks to move away from the vision of purely variable resistances, embracing instead a dynamic systems model where matter and geometry inevitably intertwine their temporal histories.</p>
+<p>The first novelty provided by this work lies in the importation and validation of the original theoretical framework into dynamic crystallography. In current literature, structural distortion models are typically addressed through classical molecular dynamics simulations or static first-principles calculations. In contrast, this Proof of Concept proposes that the coordination octahedron functions as a discrete geometric register, analogous to curvature in fundamental theories, and numerically demonstrates that this register evolves coupled to the electron density matrix via a completely positive map, constituting a novel interdisciplinary bridge. The code proves that this coupling is not a mere qualitative analogy, but a computationally viable isomorphism that respects the postulates of elementary quantum mechanics.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in <span class="math notranslate nohighlight">\(H_xNdNiO_3\)</span> Heterostructures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#generalized-time-recoverable-quantum-control-gtrqc">Generalized Time-Recoverable Quantum Control (gTRQC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#generalized-time-recoverable-quantum-control">Generalized Time-Recoverable Quantum Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#lattice-distortion-and-protonic-latency-coupling">Lattice Distortion and Protonic Latency Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#kolmogorov-tikhomirov-metric-entropy-bounds">Kolmogorov-Tikhomirov Metric Entropy Bounds</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture &amp; Engineering Blueprints</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="software.html#uml-class-diagram">UML Class Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#engine-class-hierarchy-diagram">Engine Class Hierarchy Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#legacy-versus-quantum-integration-flow">Legacy versus Quantum Integration Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#execution-sequence-flow">Execution Sequence Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#data-pipelines-and-closed-loop-feedback">Data Pipelines and Closed-Loop Feedback</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="results.html#matter-geometry-evolution-vector-goals-1-2">Matter-Geometry Evolution Vector (Goals 1 &amp; 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#matter-geometry-evolution-vector">Matter-Geometry Evolution Vector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="results.html#kolmogorov-entropy-scaling-goal-4">Kolmogorov Entropy Scaling (Goal 4)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="results.html#null-test-conservation-validation-goal-5">Null-Test Conservation Validation (Goal 5)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
 </ul>
 </div>
 </section>
 <section id="indices-modules-and-search-frameworks">
 <h1>Indices, Modules and Search Frameworks<a class="headerlink" href="#indices-modules-and-search-frameworks" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<p>The standard indices and search frameworks are available for navigation. You can consult the general index, the module index, and the search page.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="theory.html" class="btn btn-neutral float-right" title="Theoretical Framework: gTRQC in \(H_xNdNiO_3\) Heterostructures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theoretical Framework: gTRQC in Heterostructures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
