@@ -257,8 +257,13 @@ recoverability_loss_profile: [0.1, 0.2, 0.3, 0.2, 0.1, 0.0]
 
 ## 7. Verification of Paper Simulation Goals
 
-1: Goal 1: Octa Register Construction - Verifies successful mapping of the $NiO_6$ structural environment into state space registers using strong typing models.
-2: Goal 2: Recoverability-to-Geometry Coupling - Tracks the deformation path vectors as a driving function of the non-Markovian memory update parameter.
-3: Goal 3: Delay as Protonic Latency - Utilizes an internal temporal array buffer pipeline to feed $J_{eff}(t_k) = J(t_k - d_{elay})$ back into the state transition mappings.
-4: Goal 4: Capacity Under Geometry Registers - Computes Kolmogorov-Tikhomirov $\epsilon$-entropy bounds using logarithmic classification tracking ($C_{atom}(\epsilon) = \log(N_\epsilon)$).
-5: Goal 5: Null-Test Preservation - Automatically loops an auxiliary system instance with $\Delta_0 = 0$ to assert complete preservation of the system state baseline profile.
+Goal 1: Octa Register Construction - Verifies successful mapping of the $NiO_6$ structural environment into state space registers using strong typing models.
+
+Goal 2: Recoverability-to-Geometry Coupling - Tracks the deformation path vectors as a driving function of the non-Markovian memory update parameter.
+
+Goal 3: Delay as Protonic Latency - Utilizes an internal temporal array buffer pipeline to feed $J_{eff}(t_k) = J(t_k - d_{elay})$ back into the state transition mappings.
+
+Goal 4: Capacity Under Geometry Registers - Computes Kolmogorov-Tikhomirov $\epsilon$-entropy bounds using logarithmic classification tracking ($C_{atom}(\epsilon) = \log(N_\epsilon)$).
+
+Goal 5: Null-Test Preservation - Automatically loops an auxiliary system instance with $\Delta_0 = 0$ to assert complete preservation of the system state baseline profile.
+
