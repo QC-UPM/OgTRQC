@@ -3,7 +3,9 @@
 # =============================================================================
 
 # Target directory path where interactive Plotly HTML reports will be stored
-output_directory: "./reports_sim_data/"
+output_directory: "./reports_quantum/"
+
+engine: "quantum"
 
 simulation_steps: 6
 g_oct_stiffness: 3.5

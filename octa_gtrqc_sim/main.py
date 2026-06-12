@@ -13,6 +13,9 @@ from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 import yaml
 from octa_gtrqc_sim.reports import PlotlyHtmlView, MarkdownReportView
+from octa_gtrqc_sim.quantum_integrator import QuantumMaterialCell
+from octa_gtrqc_sim.quantum_memory import QuantumMemoryModel
+from octa_gtrqc_sim.material_register import MaterialRegister
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -59,35 +62,6 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "done": "Simulationsprozess erfolgreich abgeschlossen."
     }
 }
-
-
-# =============================================================================
-# MODEL LAYER
-# =============================================================================
-@dataclass
-class MaterialRegister:
-    """Represents the material octahedral curvature surrogate register vector.
-
-    Attributes:
-        theta_tilt (float): Octahedral tilting angle component.
-        theta_rot (float): Octahedral rotation angle component.
-        delta_V_oct (float): Local discrete change in octahedral cage volume.
-        delta_phi (float): Deviation of the internal Ni-O-Ni bond angle.
-        epsilon_0 (float): Baseline energy profile parameter.
-    """
-    theta_tilt: float
-    theta_rot: float
-    delta_V_oct: float
-    delta_phi: float
-    epsilon_0: float
-
-    def to_vector(self) -> List[float]:
-        """Flattens the register parameters into a mathematical float vector.
-
-        Returns:
-            List[float]: Vector list representing localized geometry configurations.
-        """
-        return [self.theta_tilt, self.theta_rot, self.delta_V_oct, self.delta_phi, self.epsilon_0]
 
 
 class OctaMemoryModel:
@@ -262,7 +236,12 @@ class SimulationPresenter:
         """
         self.config = config
         self.view = view
-        self.model = OctaMemoryModel(config)
+        engine_type = self.config.get("engine", "legacy")
+
+        if engine_type == "quantum":
+            self.model = QuantumMemoryModel(config)
+        else:
+            self.model = OctaMemoryModel(config)
 
     def run_simulation(self) -> None:
         """Orchestrates structured test frameworks addressing document goals."""
@@ -375,12 +354,17 @@ def main() -> None:
         "-o", "--output", type=str, default=None,
         help="Target directory where interactive HTML chart reports will be saved."
     )
+    parser.add_argument(
+        "-e", "--engine", type=str, default="legacy", choices=["legacy", "quantum"],
+        help="Switches the underlying mathematical integration engine used for the simulation."
+    )
 
     args = parser.parse_args()
     view = CLIView(lang=args.lang)
 
     # Establish baseline defaults parameters fallback values dictionary mappings
     default_config: Dict[str, Any] = {
+        "engine": args.engine,
         "output_directory": "reports",
         "simulation_steps": 6,
         "g_oct_stiffness": 3.0,
