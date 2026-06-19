@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Software Architecture &amp; Engineering Blueprints &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
+  <title>Software Architecture and Engineering Blueprints &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/custom_upm.css" />
@@ -484,14 +484,14 @@ window.runMermaid = runMermaid;</script>
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Software Architecture &amp; Engineering Blueprints</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Software Architecture and Engineering Blueprints</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#engine-class-hierarchy-diagram">Engine Class Hierarchy Diagram</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#legacy-versus-quantum-integration-flow">Legacy versus Quantum Integration Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-flow-and-endogenous-entropy-derivation">Integration Flow and Endogenous Entropy Derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#execution-sequence-flow">Execution Sequence Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis of Simulation Engines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis and Endogenous Recoverability Validation</a></li>
 </ul>
 
         </div>
@@ -508,7 +508,7 @@ window.runMermaid = runMermaid;</script>
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Software Architecture &amp; Engineering Blueprints</li>
+      <li class="breadcrumb-item active">Software Architecture and Engineering Blueprints</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/software.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -518,12 +518,12 @@ window.runMermaid = runMermaid;</script>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="software-architecture-engineering-blueprints">
-<h1>Software Architecture &amp; Engineering Blueprints<a class="headerlink" href="#software-architecture-engineering-blueprints" title="Link to this heading"></a></h1>
-<p>The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python 3.12. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The architectural evolution of this suite introduces a factory pattern within the presentation layer. Depending on the execution parameters, the presenter dynamically binds to either the legacy phenomenological model or the rigorous quantum density matrix integrator, both sharing a common public interface.</p>
+  <section id="software-architecture-and-engineering-blueprints">
+<h1>Software Architecture and Engineering Blueprints<a class="headerlink" href="#software-architecture-and-engineering-blueprints" title="Link to this heading"></a></h1>
+<p>The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The architectural evolution of this suite utilizes a factory pattern within the presentation layer to dynamically bind one of five mathematical engines, ranging from legacy phenomenological approximations to fully relaxed causal tensor spaces.</p>
 <section id="engine-class-hierarchy-diagram">
 <h2>Engine Class Hierarchy Diagram<a class="headerlink" href="#engine-class-hierarchy-diagram" title="Link to this heading"></a></h2>
-<p>The relationships, inherited structures, and operational boundaries of the software components are mapped out below, demonstrating the implementation of the dual-engine architecture.</p>
+<p>The relationships, inherited structures, and operational boundaries of the software components are mapped out below, demonstrating the implementation of the multi-engine architecture.</p>
 <pre  class="mermaid">
         classDiagram
    class MaterialRegister {
@@ -542,61 +542,78 @@ window.runMermaid = runMermaid;</script>
    }
    class OctaMemoryModel {
        &lt;&lt;Legacy Phenomenological&gt;&gt;
-       -float rho_scalar
        +step(V_t, delta_0) dict
    }
    class QuantumMemoryModel {
        &lt;&lt;Rigorous Von Neumann&gt;&gt;
-       -ndarray rho_matrix
+       +step(V_t, delta_0) dict
+   }
+   class CausalSufficiencyModel {
+       &lt;&lt;Expanded Tensor Space&gt;&gt;
+       +step(V_t, delta_0) dict
+   }
+   class RelaxedQuantumModel {
+       &lt;&lt;Endogenous Entropy&gt;&gt;
+       +step(V_t, delta_0) dict
+   }
+   class RelaxedCausalModel {
+       &lt;&lt;Autonomous Renormalized&gt;&gt;
        +step(V_t, delta_0) dict
    }
    IMemoryModel &lt;|.. OctaMemoryModel
    IMemoryModel &lt;|.. QuantumMemoryModel
+   IMemoryModel &lt;|.. CausalSufficiencyModel
+   IMemoryModel &lt;|.. RelaxedQuantumModel
+   IMemoryModel &lt;|.. RelaxedCausalModel
    OctaMemoryModel --&gt; MaterialRegister
    QuantumMemoryModel --&gt; MaterialRegister
+   CausalSufficiencyModel --&gt; MaterialRegister
+   RelaxedQuantumModel --&gt; MaterialRegister
+   RelaxedCausalModel --&gt; MaterialRegister
    class SimulationPresenter {
        -IMemoryModel model
        +run_simulation()
    }
    SimulationPresenter --&gt; IMemoryModel
     </pre></section>
-<section id="legacy-versus-quantum-integration-flow">
-<h2>Legacy versus Quantum Integration Flow<a class="headerlink" href="#legacy-versus-quantum-integration-flow" title="Link to this heading"></a></h2>
-<p>The transformation matrix routing for data tracking during model updates diverges based on the selected mathematical engine. The following flowchart compares the legacy phenomenological approximation against the strict quantum integration loop.</p>
+<section id="integration-flow-and-endogenous-entropy-derivation">
+<h2>Integration Flow and Endogenous Entropy Derivation<a class="headerlink" href="#integration-flow-and-endogenous-entropy-derivation" title="Link to this heading"></a></h2>
+<p>The transformation matrix routing for data tracking during model updates diverges based on the selected mathematical engine. The following flowchart compares the standard driven models against the relaxed autonomous integration loop.</p>
 <pre  class="mermaid">
         graph TD
-   Start((Time Step Evaluation)) --&gt; Fork{Selected Engine}
-   Fork --&gt;|Legacy| L1[Retrieve scalar delayed source from list buffer]
-   L1 --&gt; L2[Compute linear structural projection]
-   L2 --&gt; L3[Update discrete vector parameters]
-   L3 --&gt; L4[Apply bounded scalar CPTP proxy map to rho]
-   L4 --&gt; EndLegacy((Return Scalar Metrics))
-   Fork --&gt;|Quantum| Q1[Extract delayed thermodynamic source from deque buffer]
-   Q1 --&gt; Q2[Solve differential response of the curvature register]
-   Q2 --&gt; Q3[Build Hamiltonian matrix with applied voltage and geometric perturbation]
-   Q3 --&gt; Q4[Compute complex commutator]
-   Q4 --&gt; Q5[Execute von Neumann integration step over dt]
-   Q5 --&gt; Q6[Apply trace-preserving projection to density matrix]
-   Q6 --&gt; Q7[Extract macroscopic conductance from current operator trace]
-   Q7 --&gt; EndQuantum((Return Tensor Metrics))
+   Start((Time Step Evaluation)) --&gt; Fork{Selected Engine Strategy}
+   Fork --&gt;|External Driven| Ext1[Extract delayed external thermodynamic source]
+   Ext1 --&gt; Ext2[Solve differential response of the curvature register]
+   Ext2 --&gt; Ext3[Compute standard von Neumann integration over dt]
+   Ext3 --&gt; Ext4[Extract macroscopic conductance trace]
+   Ext4 --&gt; EndExternal((Return Standard Metrics))
+   Fork --&gt;|Endogenous Relaxed| End1[Construct total Hamiltonian with expanded Hilbert tensor]
+   End1 --&gt; End2[Compute unitary evolution step]
+   End2 --&gt; End3[Apply completely positive map via Kraus Operators]
+   End3 --&gt; End4[Derive conditional expected shadow state via partial trace]
+   End4 --&gt; End5[Calculate von Neumann relative entropy]
+   End5 --&gt; End6[Project endogenous information loss onto positive elastic tensor]
+   End6 --&gt; End7[Update structural coordinate vector]
+   End7 --&gt; EndRelaxed((Return Autonomous Metrics))
     </pre></section>
 <section id="execution-sequence-flow">
 <h2>Execution Sequence Flow<a class="headerlink" href="#execution-sequence-flow" title="Link to this heading"></a></h2>
-<p>The timeline interaction model for a discrete operational simulation window maps onto the following execution trace, showcasing the dynamic factory instantiation.</p>
+<p>The timeline interaction model for a discrete operational simulation window maps onto the following execution trace, showcasing the dynamic factory instantiation and the autonomous evaluation step.</p>
 <pre  class="mermaid">
         sequenceDiagram
    autonumber
    Participant CLI as Main Terminal
    Participant P as SimulationPresenter
-   Participant M as Selected Memory Model
+   Participant M as Selected Memory Engine
    Participant V as Execution View
    CLI -&gt;&gt; P: Initialize Framework passing configuration
    P -&gt;&gt; V: Display localized greeting
    P -&gt;&gt; M: Instantiate required physical engine via Factory
    loop Discretized Temporal Integration
-       P -&gt;&gt; M: step(Voltage, Recoverability Loss)
-       M -&gt;&gt; M: Update material register using delay buffer
+       P -&gt;&gt; M: step(Voltage, Ignored External Loss)
        M -&gt;&gt; M: Evolve quantum state representation
+       M -&gt;&gt; M: Calculate relative entropy against shadow state
+       M -&gt;&gt; M: Apply geometric strain via elastic operator
        M --&gt;&gt; P: Return observable thermodynamic metrics
        P -&gt;&gt; V: Output localized step telemetry
    end

@@ -1,18 +1,18 @@
 # Octahedral gTRQC Hydrogenated Nickelate Memory Simulation Suite
 
-A robust, strongly typed Python proof-of-concept simulation framework modeling the non-Markovian quantum-geometric dynamics of hydrogenated neodymium nickelate ($H_xNdNiO_3$) memory cells. This suite translates the concepts of Generalized Time-Reversal Symmetry-Protected Quantum Circuit (gTRQC) modeling and physical octahedral curvature surrogate registers into an executable software architecture following the Model-View-Presenter (MVP) design pattern.
+This software package serves as a robust Python proof-of-concept simulation framework modeling the non-Markovian quantum-geometric dynamics of hydrogenated neodymium nickelate memory cells. The suite translates the concepts of Generalized Time-Reversal Symmetry-Protected Quantum Circuit modeling and physical octahedral curvature surrogate registers into an executable software architecture.
 
 ## 1. Scientific Novelty and Narrative Thread
 
 The narrative thread of this Proof of Concept, inspired by the ideas presented by Villalva-Díez J. in their document regarding hydrogenated nickelate memory, focuses on presenting a validated computational architecture that redefines the understanding of memory in strongly correlated materials. This approach seeks to move away from the vision of purely variable resistances, embracing instead a dynamic systems model where matter and geometry inevitably intertwine their temporal histories.
 
-The first novelty provided by this work lies in the importation and validation of the original theoretical framework into dynamic crystallography. In current literature, structural distortion models are typically addressed through classical molecular dynamics simulations or static first-principles calculations. In contrast, this Proof of Concept proposes that the coordination octahedron functions as a discrete geometric register, analogous to curvature in fundamental theories, and numerically demonstrates that this register evolves coupled to the electron density matrix via a completely positive map, constituting a novel interdisciplinary bridge. The code proves that this coupling is not a mere qualitative analogy, but a computationally viable isomorphism that respects the postulates of elementary quantum mechanics.
+The first novelty provided by this work lies in the importation and validation of the original theoretical framework into dynamic crystallography. In current literature, structural distortion models are typically addressed through classical molecular dynamics simulations or static first-principles calculations. In contrast, this Proof of Concept proposes that the coordination octahedron functions as a discrete geometric register, analogous to curvature in fundamental theories, and numerically demonstrates that this register evolves coupled to the electron density matrix via a completely positive map. The code proves that this coupling is a computationally viable isomorphism that respects the postulates of elementary quantum mechanics through the strict implementation of Kraus operators.
 
-A second axis of methodological and physical novelty centers on the algorithmic demonstration of non-Markovian memory based on protonic latency. Most models of neuromorphic or memristive devices introduce hysteresis behavior by forcing ad hoc temporal decay functions or empirical parameters. The approach presented here breaks with this convention by implementing a strict topological delay buffer that represents the true thermodynamic inertia of hydrogen defects. By comparing the curves of the initial version with those of the quantum integrator, it can be argued that the separation of observable trajectories is not a mathematical artifact, but a deterministic consequence of structural rigidity against a delayed backreaction source.
+A second axis of methodological and physical novelty centers on the algorithmic demonstration of non-Markovian memory based on protonic latency and its subsequent causal renormalization. Most models of neuromorphic devices introduce hysteresis behavior by forcing temporal decay functions or empirical parameters. The initial approach presented here explored a strict topological delay buffer. However, the advanced relaxed causal models demonstrate that when the Hilbert space is expanded to explicitly include the latent protonic degrees of freedom, the system regains full causal autonomy. By calculating the recoverability defect endogenously through the von Neumann relative entropy between the full atomistic state and its conditionally expected shadow, the code proves that the dynamic driving force emerges naturally without external artificial signals.
 
-The third strong point brought by this development is the application of Kolmogorov-Tikhomirov entropy to quantify storage capacity. Typically, the capacity of a material memory is evaluated by counting discrete and statically distinguishable resistance states. The proposed simulation poses a profound paradigm shift by measuring capacity through the analysis of the number of equivalence classes of hidden configurations that are currently indistinguishable, but will produce divergent responses in the future above a given instrumental resolution threshold. The graph generated by the code, showing how this capacity scales as a function of the resolution limit, provides a completely new and rigorous metric for the neuromorphic materials community.
+This leads to a profound theoretical conclusion regarding the material structural physics. The simulations evidence that when the geometric register is driven by an endogenously calculated information loss and subjected to a positive elastic tensor, the macroscopic structural distortion drops significantly and the volumetric displacement returns to zero. This computationally validates the theoretical postulate that hidden algebraic memory can masquerade as curvature. The apparent persistent mechanical hysteresis observed in empirical settings is not a permanent rigid deformation of the physical lattice, but rather an observational artifact arising from an insufficient algebra. The true memory of the material resides in the rich latent topology of the hydrogen polarons rather than in the crystallographic scaffolding.
 
-Finally, passing the null-preservation test brings an experimental robustness to the model that is highly attractive from an academic standpoint. The code evidences that by suppressing the recoverability loss induced by polarons, the dynamic driving force completely disappears, and the system recovers its instantaneous Markovian nature. This can be presented not only as a validation of the mathematical model internal coherence, but also as a standard experimental protocol that physical laboratories could adopt to empirically discern whether they are facing a true latency-dependent hidden structural memory effect or simply capacitive artifacts in their measurement instruments.
+The third strong point brought by this development is the application of Kolmogorov-Tikhomirov entropy to quantify storage capacity. The proposed simulation poses a profound paradigm shift by measuring capacity through the analysis of the number of equivalence classes of hidden configurations that are currently indistinguishable, but will produce divergent responses in the future above a given instrumental resolution threshold. The graphs generated by the relaxed models seem to show exceptional atomic capacity scaling limits, that could be understood like the material compresses its history into latent quantum correlations rather than macroscopic spatial deformations.
 
 ## 2. Executive Summary & Mathematical Context
 
@@ -26,25 +26,11 @@ Where:
 
 The narrative thread of this Proof of Concept, inspired by the ideas presented by Villalva-Díez J. in their document regarding hydrogenated nickelate memory, focuses on presenting a validated computational architecture that redefines the understanding of memory in strongly correlated materials. This approach seeks to move away from the vision of purely variable resistances, embracing instead a dynamic systems model where matter and geometry inevitably intertwine their temporal histories.
 
-The first novelty provided by this work lies in the importation and validation of the original theoretical framework into dynamic crystallography. In current literature, structural distortion models are typically addressed through classical molecular dynamics simulations or static first-principles calculations. In contrast, this Proof of Concept proposes that the coordination octahedron functions as a discrete geometric register, analogous to curvature in fundamental theories, and numerically demonstrates that this register evolves coupled to the electron density matrix via a completely positive map, constituting a novel interdisciplinary bridge. The code proves that this coupling is not a mere qualitative analogy, but a computationally viable isomorphism that respects the postulates of elementary quantum mechanics.
+## 2. Architecture & Design Patterns
 
-A second axis of methodological and physical novelty centers on the algorithmic demonstration of non-Markovian memory based on protonic latency. Most models of neuromorphic or memristive devices introduce hysteresis behavior by forcing ad hoc temporal decay functions or empirical parameters. The approach presented here breaks with this convention by implementing a strict topological delay buffer that represents the true thermodynamic inertia of hydrogen defects. By comparing the curves of the initial phenomenological version with those of the rigorous quantum integrator, it can be argued that the separation of observable trajectories is not a mathematical artifact, but a deterministic consequence of structural rigidity against a delayed backreaction source.
+The project enforces a clean separation of concerns and high maintainability by strictly implementing the Model-View-Presenter design pattern alongside strong runtime typing. The architectural evolution of this suite utilizes a factory pattern within the presentation layer to dynamically bind one of five mathematical engines ranging from legacy phenomenological approximations to fully relaxed causal tensor spaces.
 
-The third strong point brought by this development is the application of Kolmogorov-Tikhomirov entropy to quantify storage capacity. Typically, the capacity of a material memory is evaluated by counting discrete and statically distinguishable resistance states. The proposed simulation poses a profound paradigm shift by measuring capacity through the analysis of the number of equivalence classes of hidden configurations that are currently indistinguishable, but will produce divergent responses in the future above a given instrumental resolution threshold. The graph generated by the code, showing how this capacity scales as a function of the resolution limit, provides a completely new and rigorous metric for the neuromorphic materials community.
-
-Finally, passing the null-preservation test brings an experimental robustness to the model that is highly attractive from an academic standpoint. The code evidences that by suppressing the recoverability loss induced by polarons, the dynamic driving force completely disappears, and the system recovers its instantaneous Markovian nature. This can be presented not only as a validation of the mathematical model internal coherence, but also as a standard experimental protocol that physical laboratories could adopt to empirically discern whether they are facing a true latency-dependent hidden structural memory effect or simply capacitive artifacts in their measurement instruments.
-
-Each geometry state carries a finite vector register acting as the material analogue of a gTRQC curvature register:
-
-$$k_{\\bullet}^{(a)}=(\\theta_{tilt}^{(a)}, \\theta_{rot}^{(a)}, \\delta V_{oct}^{(a)}, \\delta\\phi_{Ni-O-Ni}, \\epsilon_{0}^{(a)})$$
-
-The execution loop tracks the material evolution under completely positive trace-preserving (CPTP) maps, influenced by a delayed backreaction source driven by a non-Markovian protonic/lattice latency parameter ($d_{elay}$).
-
-## 3. Architecture & Design Patterns
-
-The project enforces a clean separation of concerns and high maintainability by strictly implementing the Model-View-Presenter design pattern alongside strong runtime typing. The architectural evolution of this suite introduces a factory pattern within the presentation layer. Depending on the execution parameters, the presenter dynamically binds to either the legacy phenomenological model or the rigorous quantum density matrix integrator, both sharing a common public interface.
-
-The model layer encapsulates the core physical constants, the geometric state vector isolated in the material register structure, and the state history buffer for simulating delay pipelines. The quantum variant of the model replaces scalar approximations with full complex numpy arrays representing the local Hilbert space. The view layer handles localized console rendering and dynamic chart generation, isolating user dialogue structures across multiple languages. The presenter coordinates the execution cycle, passing external voltage profiles and recoverability losses into the chosen mathematical model, capturing metrics, and routing translated summaries back to the view.
+The model layer encapsulates the core physical constants, the geometric state vector isolated in the material register structure, and the state history buffer for simulating delay pipelines. The quantum variant of the model replaces scalar approximations with full complex numpy arrays representing the local Hilbert space. The view layer handles localized console rendering and dynamic chart generation, isolating user dialogue structures across multiple languages. The presenter coordinates the execution cycle, passing external voltage profiles. Regarding the recoverability losses two approaches have been considered, either forcing them externally and feed them into the chosen mathematical model or implementing them to be estimated by inner engines (RelaxedQuantumModel and RelaxedCausalModel) in an iterative way. At the end of the day it will be possible capturing metrics, and routing translated summaries back to the view.
 
 
 ### Component Roles:
@@ -52,7 +38,7 @@ The model layer encapsulates the core physical constants, the geometric state ve
 * **View (`BaseView` / `CLIView`)**: Handles localized console rendering. It contains no business logic and isolates user dialogue structures across multiple languages via native key maps.
 * **Presenter (`SimulationPresenter`)**: Drives the execution cycle, passing external voltage profiles and recoverability losses into the model, capturing metrics, and routing translated summaries to the View.
 
-## 4. Core Features
+## 3. Core Features
 
 -   **Paradigm-Driven Architecture**: Fully object-oriented layout utilizing Python dataclasses, abstract base classes, and explicit typing annotations (`typing`).
 -   **Multi-Language i18n Dialogues**: Native execution supporting four target languages via the `-l` / `--lang` console switches:
@@ -65,7 +51,7 @@ The model layer encapsulates the core physical constants, the geometric state ve
 -   **Sphinx & Docstring Compatibility**: Formatted with extensive Google-style docstrings for transparent automated documentation compilation.
 
 
-## 5. Structural Diagrams 
+## 4. Structural Diagrams 
 
 The project enforces a clean separation of concerns and high maintainability by strictly implementing the Model-View-Presenter design pattern alongside strong runtime typing. The architectural evolution of this suite introduces a factory pattern within the presentation layer. Depending on the execution parameters, the presenter dynamically binds to either the legacy phenomenological model or the rigorous quantum density matrix integrator, both sharing a common public interface.
 
@@ -93,21 +79,40 @@ classDiagram
 
     class OctaMemoryModel {
         <<Legacy Phenomenological>>
-        -float rho_scalar
         +step(V_t, delta_0) dict
     }
 
     class QuantumMemoryModel {
         <<Rigorous Von Neumann>>
-        -ndarray rho_matrix
+        +step(V_t, delta_0) dict
+    }
+    
+    class CausalSufficiencyModel {
+        <<Expanded Tensor Space>>
+        +step(V_t, delta_0) dict
+    }
+    
+    class RelaxedQuantumModel {
+        <<Endogenous Entropy>>
+        +step(V_t, delta_0) dict
+    }
+    
+    class RelaxedCausalModel {
+        <<Autonomous Renormalized>>
         +step(V_t, delta_0) dict
     }
 
     IMemoryModel <|.. OctaMemoryModel
     IMemoryModel <|.. QuantumMemoryModel
+    IMemoryModel <|.. CausalSufficiencyModel
+    IMemoryModel <|.. RelaxedQuantumModel
+    IMemoryModel <|.. RelaxedCausalModel
     
     OctaMemoryModel --> MaterialRegister
     QuantumMemoryModel --> MaterialRegister
+    CausalSufficiencyModel --> MaterialRegister
+    RelaxedQuantumModel --> MaterialRegister
+    RelaxedCausalModel --> MaterialRegister
 
     class SimulationPresenter {
         -IMemoryModel model
@@ -121,22 +126,22 @@ classDiagram
 
 ```mermaid
 graph TD
-    Start((Time Step Evaluation)) --> Fork{Selected Engine}
+    Start((Time Step Evaluation)) --> Fork{Selected Engine Strategy}
     
-    Fork -->|Legacy| L1[Retrieve scalar delayed source from list buffer]
-    L1 --> L2[Compute linear structural projection J_0]
-    L2 --> L3[Update discrete vector parameters]
-    L3 --> L4[Apply bounded scalar CPTP proxy map to rho]
-    L4 --> EndLegacy((Return Scalar Metrics))
+    Fork -->|External Driven| Ext1[Extract delayed external thermodynamic source]
+    Ext1 --> Ext2[Solve differential response of the curvature register]
+    Ext2 --> Ext3[Compute standard von Neumann integration over dt]
+    Ext3 --> Ext4[Extract macroscopic conductance trace]
+    Ext4 --> EndExternal((Return Standard Metrics))
     
-    Fork -->|Quantum| Q1[Extract delayed thermodynamic source from deque buffer]
-    Q1 --> Q2[Solve differential response of the curvature register]
-    Q2 --> Q3[Build Hamiltonian matrix with V_t and geometric perturbation]
-    Q3 --> Q4[Compute complex commutator]
-    Q4 --> Q5[Execute von Neumann integration step over dt]
-    Q5 --> Q6[Apply trace-preserving projection to density matrix]
-    Q6 --> Q7[Extract macroscopic conductance from current operator trace]
-    Q7 --> EndQuantum((Return Tensor Metrics))
+    Fork -->|Endogenous Relaxed| End1[Construct total Hamiltonian with expanded Hilbert tensor]
+    End1 --> End2[Compute unitary evolution step]
+    End2 --> End3[Apply completely positive map via Kraus Operators]
+    End3 --> End4[Derive conditional expected shadow state via partial trace]
+    End4 --> End5[Calculate von Neumann relative entropy]
+    End5 --> End6[Project endogenous information loss onto positive elastic tensor]
+    End6 --> End7[Update structural coordinate vector]
+    End7 --> EndRelaxed((Return Autonomous Metrics))
 ```
 
 ### Sequence Diagram
@@ -145,7 +150,7 @@ sequenceDiagram
     autonumber
     Participant CLI as Main Terminal
     Participant P as SimulationPresenter
-    Participant M as Selected Memory Model
+    Participant M as Selected Memory Engine
     Participant V as Execution View
 
     CLI ->> P: Initialize Framework passing configuration
@@ -153,9 +158,10 @@ sequenceDiagram
     P ->> M: Instantiate required physical engine via Factory
     
     loop Discretized Temporal Integration
-        P ->> M: step(Voltage, Recoverability Loss)
-        M ->> M: Update material register using delay buffer
+        P ->> M: step(Voltage, Ignored External Loss)
         M ->> M: Evolve quantum state representation
+        M ->> M: Calculate relative entropy against shadow state
+        M ->> M: Apply geometric strain via elastic operator
         M -->> P: Return observable thermodynamic metrics
         P ->> V: Output localized step telemetry
     end
@@ -166,7 +172,7 @@ sequenceDiagram
     V -->> CLI: Generate HTML reports and Markdown tabular data
 ```
 
-## 6. Operations & Execution Guide
+## 5. Operations & Execution Guide
 
 This project leverages Poetry to isolate virtual environments and track package graphs. To initiate the environment, clone the repository and execute the installation command followed by the shell activation command. The command line interface provides a comprehensive suite of options to tailor the simulation experience.
 
@@ -255,7 +261,7 @@ voltage_profile: [1.0, 1.5, 1.2, 0.8, 0.4, 0.0]
 recoverability_loss_profile: [0.1, 0.2, 0.3, 0.2, 0.1, 0.0]
 ```
 
-## 7. Verification of Simulation Goals
+## 6. Verification of Simulation Goals
 
 Goal 1: Octa Register Construction - Verifies successful mapping of the $NiO_6$ structural environment into state space registers using strong typing models.
 

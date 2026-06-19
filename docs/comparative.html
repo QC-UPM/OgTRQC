@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Comparative Analysis of Simulation Engines &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
+  <title>Comparative Analysis and Endogenous Recoverability Validation &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/custom_upm.css" />
@@ -47,9 +47,9 @@
               <p class="caption" role="heading"><span class="caption-text">Structural Chapters:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture &amp; Engineering Blueprints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture and Engineering Blueprints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Comparative Analysis of Simulation Engines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Comparative Analysis and Endogenous Recoverability Validation</a></li>
 </ul>
 
         </div>
@@ -66,7 +66,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Comparative Analysis of Simulation Engines</li>
+      <li class="breadcrumb-item active">Comparative Analysis and Endogenous Recoverability Validation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/comparative.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,20 +76,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="comparative-analysis-of-simulation-engines">
-<h1>Comparative Analysis of Simulation Engines<a class="headerlink" href="#comparative-analysis-of-simulation-engines" title="Link to this heading"></a></h1>
-<p>The comparative analysis of the data extracted from the generated reports reveals fundamental thermodynamic and informational differences between the phenomenological approximation and the strict quantum integrator. When observing the coupling trajectory between matter and geometry, the classical simulation shows a progressive and pronounced increase in the distortion of the octahedral cage, scaling from a base value of zero point eighteen to reach a maximum of zero point twenty-two at the end of the sixth simulation step. Conversely, the quantum engine, governed by von Neumann integration, subjects the system to a much more rigid and bounded structural evolution, where the distortion barely experiences marginal growth until stabilizing at zero point eighteen five under the same applied voltage profile. This divergence evidences that the exact tensorial treatment of the local Hamiltonian and trace preservation naturally limit the deformation of the crystal lattice, preventing the excessive volumetric deviation that the scalar proxy of the legacy model artificially allowed, which becomes evident when observing that the final volume displacement is almost an order of magnitude smaller in the quantum simulation.</p>
+  <section id="comparative-analysis-and-endogenous-recoverability-validation">
+<h1>Comparative Analysis and Endogenous Recoverability Validation<a class="headerlink" href="#comparative-analysis-and-endogenous-recoverability-validation" title="Link to this heading"></a></h1>
+<p>The comparative analysis of the data extracted from the generated reports reveals a profound shift in the interpretation of thermodynamic inertia when transitioning from externally driven models to endogenously relaxed architectures. When observing the coupling trajectory between matter and geometry, the original models exhibited a progressive and pronounced increase in the distortion of the octahedral cage. Conversely, both the relaxed quantum and relaxed causal models show a structural behavior where the geometric distortion does not accumulate, but rather decays significantly throughout the simulation steps, leading to a complete nullification of the final volume displacement.</p>
+<p>This mechanical relaxation confirms that the dissipation of quantum information exists and continues to operate on the system, but its real physical impact is governed by internal dynamics rather than empirically forced profiles. By expanding the Hilbert space and computing the recoverability defect through von Neumann relative entropy, the simulation demonstrates that the latent entanglement swiftly dilutes the purity of the visible electronic subspace. However, the resulting endogenous elastic force is fundamentally insufficient to maintain the crystal lattice in a state of permanent macroscopic torsion.</p>
 <div style="display: flex; flex-direction: column; gap: 20px;">
-    <h3>Legacy Phenomenological Coupling</h3>
-    <iframe src="../../reports_legacy/goal_1_2_coupling.html" height="600px" width="100%" style="border:none;"></iframe>
-    <h3>Rigorous Quantum Coupling</h3>
-    <iframe src="../../reports_quantum/goal_1_2_coupling.html" height="600px" width="100%" style="border:none;"></iframe>
-</div><p>Regarding the evaluation of the Kolmogorov and Tikhomirov entropic capacity limits, the rigorous calculation using density matrices demonstrates that the material possesses an information storage ceiling higher than initially estimated. By setting an instrumental resolution boundary condition of zero point zero two, the classical model quantified an atomic memory capacity of three point twenty-five. However, the execution of the quantum model raises this thermodynamic limit to three point eighty-five for that same threshold. This superior metric is systematically maintained throughout the entire resolution sweep, from an epsilon of zero point one to zero point zero zero two, indicating that the phase space defined by the exact coupling allows packing a greater amount of hidden equivalence classes of hydrogen polarons without them macroscopically overlapping. Consequently, the discussion of these results confirms that the transition towards a rigorous mathematical architecture not only improves the physical fidelity of the geometric relaxation trajectories but also brings to light a potential for non-Markovian memory retention in hydrogenated nickelate that is notably broader than postulated by empirical approximations.</p>
+    <h3>Endogenous Relaxed Quantum Coupling</h3>
+    <iframe src="../../reports_relaxed_quantum/goal_1_2_coupling.html" height="600px" width="100%" style="border:none;"></iframe>
+    <h3>Endogenous Relaxed Causal Coupling</h3>
+    <iframe src="../../reports_relaxed_causal/goal_1_2_coupling.html" height="600px" width="100%" style="border:none;"></iframe>
+</div><p>These results critically correct the initial assumption that the memory of the device arises exclusively from the physical rigidity of the crystal lattice. The high structural deformation postulated in early iterations was a mathematical artifact caused by attempting to fit a geometric model operating under an insufficient algebra. The rigorous application of a positive elastic operator allows the system to resolve its own causal autonomy, empirically proving the theoretical theorem that hidden algebraic memory can masquerade as curvature.</p>
+<p>The true inertia and storage capacity of the hydrogenated nickelate cell lie entirely within the rich topology of its latent quantum states. This is corroborated by the Kolmogorov and Tikhomirov entropic capacity limits, which maintain exceptionally high values above six for ultra fine resolution boundaries in the relaxed integrations. The crystallographic scaffold does not need to undergo extreme physical bending to exhibit memory retentiveness, as the device efficiently compresses its temporal history into the algebraic correlations of the hidden hydrogen polarons.</p>
 <div style="display: flex; flex-direction: column; gap: 20px;">
-    <h3>Legacy Capacity Bounds</h3>
-    <iframe src="../../reports_legacy/goal_4_capacity.html" height="600px" width="100%" style="border:none;"></iframe>
-    <h3>Quantum Capacity Bounds</h3>
-    <iframe src="../../reports_quantum/goal_4_capacity.html" height="600px" width="100%" style="border:none;"></iframe>
+    <h3>Relaxed Quantum Capacity Bounds</h3>
+    <iframe src="../../reports_relaxed_quantum/goal_4_capacity.html" height="600px" width="100%" style="border:none;"></iframe>
+    <h3>Relaxed Causal Capacity Bounds</h3>
+    <iframe src="../../reports_relaxed_causal/goal_4_capacity.html" height="600px" width="100%" style="border:none;"></iframe>
 </div></section>
 
 

@@ -16,6 +16,9 @@ from octa_gtrqc_sim.reports import PlotlyHtmlView, MarkdownReportView
 from octa_gtrqc_sim.quantum_integrator import QuantumMaterialCell
 from octa_gtrqc_sim.quantum_memory import QuantumMemoryModel
 from octa_gtrqc_sim.material_register import MaterialRegister
+from octa_gtrqc_sim.causal_integrator import CausalSufficiencyModel
+from octa_gtrqc_sim.causal_recovery import RelaxedCausalModel
+from octa_gtrqc_sim.quantum_recovery import RelaxedQuantumModel
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -28,6 +31,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "sim_step": "Step {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Octa Distortion={dist:.4f}",
         "capacity_res": "Calculated Kolmogorov Atom Capacity C_atom(epsilon={eps}): {cap:.4f}",
         "null_test_pass": "Null-Test Verification Passed: Dynamic source vanishes under zero recoverability loss.",
+        "error_invalid_engine": "Error: Unrecognized mathematical integration engine '{engine}'. Halting execution.",
         "null_test_fail": "Null-Test Verification Failed!",
         "done": "Simulation process completed successfully."
     },
@@ -37,6 +41,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "running_goal": "Ejecutando Objetivo de Simulación {goal}: {desc}",
         "sim_step": "Paso {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Distorsión Octa={dist:.4f}",
         "capacity_res": "Capacidad Atómica de Kolmogorov C_atom(epsilon={eps}) calculada: {cap:.4f}",
+        "error_invalid_engine": "Error: Motor de integración matemática no reconocido '{engine}'. Deteniendo la ejecución.",
         "null_test_pass": "Verificación de Prueba Nula Exitosa: El origen dinámico se desvanece con pérdida de recuperabilidad cero.",
         "null_test_fail": "¡Fallo en la Verificación de la Prueba Nula!",
         "done": "Proceso de simulación completado con éxito."
@@ -47,6 +52,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "running_goal": "Exécution de l'Objectif de Simulation {goal}: {desc}",
         "sim_step": "Étape {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Distorsion Octa={dist:.4f}",
         "capacity_res": "Capacité Atomique de Kolmogorov C_atom(epsilon={eps}) calculée: {cap:.4f}",
+        "error_invalid_engine": "Erreur : Moteur d'intégration mathématique non reconnu '{engine}'. Arrêt de l'exécution.",
         "null_test_pass": "Vérification du Test Nul Réussie: La source dynamique s'annule sous une perte de récupérabilité nulle.",
         "null_test_fail": "Échec de la Vérification du Test Nul!",
         "done": "Processus de simulation terminé avec succès."
@@ -57,6 +63,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "running_goal": "Ausführen von Simulationsziel {goal}: {desc}",
         "sim_step": "Schritt {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Okta-Verzerrung={dist:.4f}",
         "capacity_res": "Berechnete Kolmogorov-Atomkapazität C_atom(epsilon={eps}): {cap:.4f}",
+        "error_invalid_engine": "Fehler: Unerkannter mathematischer Integrationsmotor '{engine}'. Ausführung wird angehalten.",
         "null_test_pass": "Nulltest-Verifizierung Bestanden: Dynamische Quelle verschwindet bei Null-Wiederherstellbarkeitsverlust.",
         "null_test_fail": "Nulltest-Verifizierung Fehlgeschlagen!",
         "done": "Simulationsprozess erfolgreich abgeschlossen."
@@ -238,10 +245,19 @@ class SimulationPresenter:
         self.view = view
         engine_type = self.config.get("engine", "legacy")
 
-        if engine_type == "quantum":
+        if engine_type == "causal":
+            self.model = CausalSufficiencyModel(config)
+        elif engine_type == "quantum":
             self.model = QuantumMemoryModel(config)
-        else:
+        elif engine_type == "legacy":
             self.model = OctaMemoryModel(config)
+        elif engine_type == "relaxed_quantum":
+            self.model = RelaxedQuantumModel(config)
+        elif engine_type == "relaxed_causal":
+            self.model = RelaxedCausalModel(config)
+        else:
+            self.view.show_message("error_invalid_engine", engine=engine_type)
+            raise ValueError(f"Unrecognized mathematical integration engine: {engine_type}")
 
     def run_simulation(self) -> None:
         """Orchestrates structured test frameworks addressing document goals."""
@@ -269,10 +285,12 @@ class SimulationPresenter:
             history_voltages.append(v_t)
             history_rhos.append(metrics["rho"])
             history_distortions.append(metrics["distortion"])
-            history_raw_sources.append(metrics["raw_source"])
-            history_eff_sources.append(metrics["j_eff"])
+            history_raw_sources.append(metrics.get("raw_source",0.0))
+            history_eff_sources.append(metrics.get("j_eff", metrics.get(
+                                                   "endogenous_delta", 0.0)))
 
-            self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], dist=metrics["distortion"])
+            self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], 
+                                                    dist=metrics["distortion"])
 
         # Goal 4: Entropic Capacity Analysis Frameworks Execution
         self.view.show_message("running_goal", goal="4", desc="Capacity calculation under Geometry Registers")
@@ -355,7 +373,8 @@ def main() -> None:
         help="Target directory where interactive HTML chart reports will be saved."
     )
     parser.add_argument(
-        "-e", "--engine", type=str, default="legacy", choices=["legacy", "quantum"],
+        "-e", "--engine", type=str, default="legacy", choices=["legacy", 
+                                "quantum","causal","relaxed_quantum","relaxed_causal"],
         help="Switches the underlying mathematical integration engine used for the simulation."
     )
 
