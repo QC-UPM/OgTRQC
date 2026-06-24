@@ -42,11 +42,11 @@ In contrast, the rigorous quantum integrator evaluates the macroscopic conductan
 
 **Physical Analysis:** Driving the model with high potential fields initially reduces quantum coherence (dropping from :math:`1.0` to a minimum of :math:`0.9054` at Step 4). This drop acts as an informational sink that distorts the local cage configuration with a noticeable delay, causing the structural distortion metric to scale upward from its base line value of :math:`0.1800` to a maximum of :math:`0.2237` at the end of the run. This confirms that the crystal network stores structural evidence of previous state manipulations.
 
-Kolmogorov Entropy Scaling (Goal 4)
------------------------------------
-Evaluating the system memory capacity under a strict resolution boundary condition yields insightful limits on atomic information capability. The legacy model computes a capacity of approximately 3.2581 for a base threshold. However, under the quantum matrix formulation, the calculated Kolmogorov Atom Capacity increases to 3.8501 for the same resolution boundary. When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.
+Heuristic Resolution Scaling (Goal 4)
+-------------------------------------
+The true Kolmogorov-Tikhomirov capacity associated with expansive tensor-network descriptions of the hidden state space remains, in principle, a tractable mathematical target, but it is computationally prohibitive for this initial proof of concept. For that reason, the present implementation does not claim an exact metric-entropy computation. Instead, Goal 4 reports a conductance-coupled heuristic resolution indicator built from the scalar observable used throughout the simulator.
 
-When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.
+Under the baseline threshold, the legacy model yields a heuristic value close to 3.2581, while the quantum matrix formulation yields approximately 3.8501 for the same resolution boundary. When sweeping the resolution array, the indicator still exhibits a monotone ceiling-like trend as :math:`\epsilon` narrows. The conservative interpretation is therefore not that the formal atomic capacity has been computed, but that the implemented proxy remains consistent with a richer hidden-state organization in the tensorially extended models.
 
 Null-Test Conservation Validation (Goal 5)
 ------------------------------------------

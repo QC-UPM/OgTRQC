@@ -1,11 +1,57 @@
 Software Architecture and Engineering Blueprints
 ================================================
 
-The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The architectural evolution of this suite utilizes a factory pattern within the presentation layer to dynamically bind one of five mathematical engines, ranging from legacy phenomenological approximations to fully relaxed causal tensor spaces.
+The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The presentation layer can dynamically bind legacy phenomenological engines, fixed-dimension quantum engines, or a scalable relaxed Hilbert-space engine that spans 2x2, 4x4, 8x8, and 16x16 configurations from one computational core.
 
 Engine Class Hierarchy Diagram
 ------------------------------
 The relationships, inherited structures, and operational boundaries of the software components are mapped out below, demonstrating the implementation of the multi-engine architecture.
+
+
+Engine Campaign Matrix
+----------------------
+The refactored execution layer distinguishes between user-facing campaign aliases and the effective engine implementation used internally.
+
+.. list-table:: Engine Alias Matrix
+   :widths: 18 14 28 22
+   :header-rows: 1
+
+   * - User-Facing Alias
+     - Hilbert Space
+     - Internal Implementation
+     - Default Output Folder
+   * - ``legacy``
+     - scalar proxy
+     - ``OctaMemoryModel``
+     - ``reports_legacy``
+   * - ``quantum``
+     - ``2x2``
+     - ``QuantumMemoryModel``
+     - ``reports_quantum``
+   * - ``causal``
+     - ``4x4``
+     - ``CausalSufficiencyModel``
+     - ``reports_causal``
+   * - ``relaxed_quantum``
+     - ``2x2``
+     - ``ScalableHilbertSpaceModel`` via compatibility wrapper
+     - ``reports_relaxed_quantum``
+   * - ``relaxed_causal``
+     - ``4x4``
+     - ``ScalableHilbertSpaceModel`` via compatibility wrapper
+     - ``reports_relaxed_causal``
+   * - ``extended_quantum``
+     - ``8x8``
+     - ``ScalableHilbertSpaceModel`` via compatibility wrapper
+     - ``reports_extended_quantum``
+   * - ``extended_causal``
+     - ``8x8``
+     - ``ScalableHilbertSpaceModel`` via compatibility wrapper
+     - ``reports_extended_causal``
+   * - ``scalable_relaxed``
+     - configurable: ``2x2``, ``4x4``, ``8x8``, ``16x16``
+     - ``ScalableHilbertSpaceModel``
+     - ``reports_scalable_h*``
 
 .. mermaid::
 
@@ -21,7 +67,7 @@ The relationships, inherited structures, and operational boundaries of the softw
       class IMemoryModel {
           <<interface>>
           +step(V_t, delta_0) dict
-          +calculate_capacity(epsilon) float
+          +estimate_resolution_heuristic(epsilon) float
           +get_state() dict
       }
       class OctaMemoryModel {
@@ -36,24 +82,18 @@ The relationships, inherited structures, and operational boundaries of the softw
           <<Expanded Tensor Space>>
           +step(V_t, delta_0) dict
       }
-      class RelaxedQuantumModel {
-          <<Endogenous Entropy>>
-          +step(V_t, delta_0) dict
-      }
-      class RelaxedCausalModel {
-          <<Autonomous Renormalized>>
+      class ScalableHilbertSpaceModel {
+          <<Dimension-Scalable Relaxed>>
           +step(V_t, delta_0) dict
       }
       IMemoryModel <|.. OctaMemoryModel
       IMemoryModel <|.. QuantumMemoryModel
       IMemoryModel <|.. CausalSufficiencyModel
-      IMemoryModel <|.. RelaxedQuantumModel
-      IMemoryModel <|.. RelaxedCausalModel
+      IMemoryModel <|.. ScalableHilbertSpaceModel
       OctaMemoryModel --> MaterialRegister
       QuantumMemoryModel --> MaterialRegister
       CausalSufficiencyModel --> MaterialRegister
-      RelaxedQuantumModel --> MaterialRegister
-      RelaxedCausalModel --> MaterialRegister
+      ScalableHilbertSpaceModel --> MaterialRegister
       class SimulationPresenter {
           -IMemoryModel model
           +run_simulation()
@@ -105,7 +145,7 @@ The timeline interaction model for a discrete operational simulation window maps
           M -->> P: Return observable thermodynamic metrics
           P ->> V: Output localized step telemetry
       end
-      P ->> M: calculate_capacity(epsilon bounds)
-      M -->> P: Return Kolmogorov memory capacity
+      P ->> M: estimate_resolution_heuristic(epsilon bounds)
+      M -->> P: Return heuristic resolution indicator
       P ->> V: render_results(final_state_summary)
       V -->> CLI: Generate HTML reports and Markdown tabular data

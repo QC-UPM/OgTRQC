@@ -22,6 +22,7 @@ from octa_gtrqc_sim.causal_integrator import CausalSufficiencyModel
 from octa_gtrqc_sim.causal_recovery import RelaxedCausalModel
 from octa_gtrqc_sim.quantum_recovery import RelaxedQuantumModel
 from octa_gtrqc_sim.extended_recovery import ExtendedRelaxedCausalModel, ExtendedRelaxedQuantumModel
+from octa_gtrqc_sim.scalable_hilbert import ScalableHilbertSpaceModel
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -32,7 +33,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "loading_config": "Loading parameters from configuration file: {path}",
         "running_goal": "Executing Simulation Goal {goal}: {desc}",
         "sim_step": "Step {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Octa Distortion={dist:.4f}",
-        "capacity_res": "Calculated Kolmogorov Atom Capacity C_atom(epsilon={eps}): {cap:.4f}",
+        "capacity_res": "Heuristic resolution estimate H_res(epsilon={eps}) from conductance proxy: {cap:.4f}",
         "null_test_pass": "Null-Test Verification Passed: Dynamic source vanishes under zero recoverability loss.",
         "error_invalid_engine": "Error: Unrecognized mathematical integration engine '{engine}'. Halting execution.",
         "null_test_fail": "Null-Test Verification Failed!",
@@ -43,7 +44,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "loading_config": "Cargando parámetros desde el archivo de configuración: {path}",
         "running_goal": "Ejecutando Objetivo de Simulación {goal}: {desc}",
         "sim_step": "Paso {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Distorsión Octa={dist:.4f}",
-        "capacity_res": "Capacidad Atómica de Kolmogorov C_atom(epsilon={eps}) calculada: {cap:.4f}",
+        "capacity_res": "Estimación heurística de resolución H_res(epsilon={eps}) a partir del proxy de conductancia: {cap:.4f}",
         "error_invalid_engine": "Error: Motor de integración matemática no reconocido '{engine}'. Deteniendo la ejecución.",
         "null_test_pass": "Verificación de Prueba Nula Exitosa: El origen dinámico se desvanece con pérdida de recuperabilidad cero.",
         "null_test_fail": "¡Fallo en la Verificación de la Prueba Nula!",
@@ -54,7 +55,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "loading_config": "Chargement des paramètres depuis le fichier: {path}",
         "running_goal": "Exécution de l'Objectif de Simulation {goal}: {desc}",
         "sim_step": "Étape {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Distorsion Octa={dist:.4f}",
-        "capacity_res": "Capacité Atomique de Kolmogorov C_atom(epsilon={eps}) calculée: {cap:.4f}",
+        "capacity_res": "Estimation heuristique de résolution H_res(epsilon={eps}) à partir du proxy de conductance: {cap:.4f}",
         "error_invalid_engine": "Erreur : Moteur d'intégration mathématique non reconnu '{engine}'. Arrêt de l'exécution.",
         "null_test_pass": "Vérification du Test Nul Réussie: La source dynamique s'annule sous une perte de récupérabilité nulle.",
         "null_test_fail": "Échec de la Vérification du Test Nul!",
@@ -65,7 +66,7 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
         "loading_config": "Lade Parameter aus der Konfigurationsdatei: {path}",
         "running_goal": "Ausführen von Simulationsziel {goal}: {desc}",
         "sim_step": "Schritt {step:03d} | V(t)={v:.2f}V | rho={rho:.4f} | Okta-Verzerrung={dist:.4f}",
-        "capacity_res": "Berechnete Kolmogorov-Atomkapazität C_atom(epsilon={eps}): {cap:.4f}",
+        "capacity_res": "Heuristische Aufloesungsabschaetzung H_res(epsilon={eps}) aus dem Leitfaehigkeits-Proxy: {cap:.4f}",
         "error_invalid_engine": "Fehler: Unerkannter mathematischer Integrationsmotor '{engine}'. Ausführung wird angehalten.",
         "null_test_pass": "Nulltest-Verifizierung Bestanden: Dynamische Quelle verschwindet bei Null-Wiederherstellbarkeitsverlust.",
         "null_test_fail": "Nulltest-Verifizierung Fehlgeschlagen!",
@@ -90,6 +91,7 @@ class OctaMemoryModel:
         self.g_oct: float = float(config.get("g_oct_stiffness", 2.5))
         self.delay: int = int(config.get("protonic_delay_steps", 2))
         self.delay_buffer: List[float] = [0.0] * self.delay
+        self.hilbert_dimension_label = "scalar_proxy"
 
     def step(self, V_t: float, delta_0: float) -> Dict[str, float]:
         raw_source = delta_0 * self.g_oct
@@ -116,11 +118,15 @@ class OctaMemoryModel:
             "j_0": j_0
         }
 
-    def calculate_capacity(self, epsilon: float) -> float:
+    def estimate_resolution_heuristic(self, epsilon: float) -> float:
         if epsilon <= 0:
             epsilon = 1e-4
         n_epsilon = max(1, int(1.0 / (epsilon * (1.0 + abs(self.rho)))))
         return math.log(n_epsilon)
+
+    def calculate_capacity(self, epsilon: float) -> float:
+        """Backward-compatible alias for the heuristic resolution estimate."""
+        return self.estimate_resolution_heuristic(epsilon)
 
     def get_state(self) -> Dict[str, Any]:
         return {
@@ -177,8 +183,10 @@ class SimulationPresenter:
 
         if engine_type == "causal":
             self.model = CausalSufficiencyModel(config)
+            self.model.hilbert_dimension_label = "4x4"
         elif engine_type == "quantum":
             self.model = QuantumMemoryModel(config)
+            self.model.hilbert_dimension_label = "2x2"
         elif engine_type == "legacy":
             self.model = OctaMemoryModel(config)
         elif engine_type == "relaxed_quantum":
@@ -189,6 +197,8 @@ class SimulationPresenter:
             self.model = ExtendedRelaxedQuantumModel(config)
         elif engine_type == "extended_causal":
             self.model = ExtendedRelaxedCausalModel(config)
+        elif engine_type == "scalable_relaxed":
+            self.model = ScalableHilbertSpaceModel(config)
         else:
             self.view.show_message("error_invalid_engine", engine=engine_type)
             raise ValueError(f"Unrecognized mathematical integration engine: {engine_type}")
@@ -237,10 +247,10 @@ class SimulationPresenter:
 
             self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], dist=metrics["distortion"])
 
-        self.view.show_message("running_goal", goal="4", desc="Capacity calculation under Geometry Registers")
+        self.view.show_message("running_goal", goal="4", desc="Heuristic resolution indicator under Geometry Registers")
         epsilon = float(self.config.get("epsilon_bound", 0.05))
-        capacity = self.model.calculate_capacity(epsilon)
-        self.view.show_message("capacity_res", eps=epsilon, cap=capacity)
+        resolution_heuristic = self.model.estimate_resolution_heuristic(epsilon)
+        self.view.show_message("capacity_res", eps=epsilon, cap=resolution_heuristic)
 
         self.view.show_message("running_goal", goal="5", desc="Null-Test Preservation Verification")
         null_model = OctaMemoryModel(self.config)
@@ -252,30 +262,35 @@ class SimulationPresenter:
             self.view.show_message("null_test_fail")
 
         final_state = self.model.get_state()
-        final_state["final_capacity_estimation"] = capacity
+        final_state["final_resolution_heuristic_estimation"] = resolution_heuristic
+        final_state.setdefault("hilbert_dimension_label", getattr(self.model, "hilbert_dimension_label", "scalar_proxy"))
         self.view.render_results(final_state)
         self.view.show_message("done")
 
         target_dir = self.config.get("output_directory", "reports")
-        plotly_view = PlotlyHtmlView(output_dir=target_dir)
+        hilbert_dimension_label = getattr(self.model, "hilbert_dimension_label", "scalar_proxy")
+        plotly_view = PlotlyHtmlView(output_dir=target_dir, hilbert_dimension_label=hilbert_dimension_label)
 
         p1 = plotly_view.generate_goals_1_2_chart(step_axis, history_voltages, history_rhos, history_distortions)
         p2 = plotly_view.generate_goal_3_chart(step_axis, history_raw_sources, history_eff_sources)
 
         eps_axis: List[float] = self.config.get("goal_4_epsilon_sweep", [0.1, 0.05, 0.02, 0.01, 0.005])
-        cap_axis: List[float] = [self.model.calculate_capacity(e) for e in eps_axis]
-        p3 = plotly_view.generate_goal_4_chart(eps_axis, cap_axis)
+        heuristic_axis: List[float] = [self.model.estimate_resolution_heuristic(e) for e in eps_axis]
+        p3 = plotly_view.generate_goal_4_chart(eps_axis, heuristic_axis)
         
-        print(f"Interactive reports compiled successfully inside ./{plotly_view.output_dir}/ directory!")
-        capacity_results = {e: self.model.calculate_capacity(e) for e in eps_axis}
-        md_logger = MarkdownReportView(output_dir=target_dir)
+        print(
+            f"Interactive reports compiled successfully inside ./{plotly_view.output_dir}/ directory "
+            f"for Hilbert {hilbert_dimension_label}!"
+        )
+        heuristic_results = {e: self.model.estimate_resolution_heuristic(e) for e in eps_axis}
+        md_logger = MarkdownReportView(output_dir=target_dir, hilbert_dimension_label=hilbert_dimension_label)
         md_file_created = md_logger.write_summary_report(
             config=self.config,
             steps=step_axis,
             voltages=history_voltages,
             rhos=history_rhos,
             distortions=history_distortions,
-            capacity_sweep=capacity_results,
+            capacity_sweep=heuristic_results,
             final_state=final_state
         )
 
@@ -303,7 +318,7 @@ def main() -> None:
     )
     parser.add_argument(
         "-e", "--engine", type=str, default=None, choices=["legacy", "quantum", "causal", 
-                    "relaxed_quantum", "relaxed_causal", "extended_quantum", "extended_causal"],
+                    "relaxed_quantum", "relaxed_causal", "extended_quantum", "extended_causal", "scalable_relaxed"],
         help="Switches the underlying mathematical integration engine used for the simulation."
     )
     parser.add_argument(
@@ -313,6 +328,10 @@ def main() -> None:
     parser.add_argument(
         "--gamma", type=float, default=None,
         help="Dephasing gamma parameter for environmental Kraus operators."
+    )
+    parser.add_argument(
+        "--hilbert-dim", type=int, default=None, choices=[2, 4, 8, 16],
+        help="Explicit Hilbert-space dimension for the scalable relaxed engine."
     )
 
     args = parser.parse_args()
@@ -328,6 +347,7 @@ def main() -> None:
         "initial_rho": 1.0,
         "ni_transverse_hopping": 0.8,
         "dephasing_gamma": 0.05,
+        "hilbert_dimension": 8,
         "proton_hopping_energy": 0.5,
         "inter_site_hopping": 0.2,
         "electron_proton_coupling": 1.2,
@@ -358,6 +378,9 @@ def main() -> None:
         
     if args.gamma is not None:
         default_config["dephasing_gamma"] = args.gamma
+
+    if args.hilbert_dim is not None:
+        default_config["hilbert_dimension"] = args.hilbert_dim
 
     presenter = SimulationPresenter(config=default_config, view=view)
     presenter.run_simulation()

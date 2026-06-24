@@ -7,7 +7,7 @@
   <title>Simulated Data Diagnostics and Analytical Interpretation &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/custom_upm.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom_upm.css?v=7c8f0086" />
 
   
   <!--[if lt IE 9]>
@@ -52,11 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software Architecture and Engineering Blueprints</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Simulated Data Diagnostics and Analytical Interpretation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#matter-geometry-evolution-vector">Matter-Geometry Evolution Vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#kolmogorov-entropy-scaling-goal-4">Kolmogorov Entropy Scaling (Goal 4)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#heuristic-resolution-scaling-goal-4">Heuristic Resolution Scaling (Goal 4)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#null-test-conservation-validation-goal-5">Null-Test Conservation Validation (Goal 5)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis and Endogenous Recoverability Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cptp_evolution.html">Exact Unitary Evolution and CPTP Map Rigor</a></li>
 </ul>
 
         </div>
@@ -139,10 +140,10 @@
 </table>
 <p><strong>Physical Analysis:</strong> Driving the model with high potential fields initially reduces quantum coherence (dropping from <span class="math notranslate nohighlight">\(1.0\)</span> to a minimum of <span class="math notranslate nohighlight">\(0.9054\)</span> at Step 4). This drop acts as an informational sink that distorts the local cage configuration with a noticeable delay, causing the structural distortion metric to scale upward from its base line value of <span class="math notranslate nohighlight">\(0.1800\)</span> to a maximum of <span class="math notranslate nohighlight">\(0.2237\)</span> at the end of the run. This confirms that the crystal network stores structural evidence of previous state manipulations.</p>
 </section>
-<section id="kolmogorov-entropy-scaling-goal-4">
-<h2>Kolmogorov Entropy Scaling (Goal 4)<a class="headerlink" href="#kolmogorov-entropy-scaling-goal-4" title="Link to this heading"></a></h2>
-<p>Evaluating the system memory capacity under a strict resolution boundary condition yields insightful limits on atomic information capability. The legacy model computes a capacity of approximately 3.2581 for a base threshold. However, under the quantum matrix formulation, the calculated Kolmogorov Atom Capacity increases to 3.8501 for the same resolution boundary. When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.</p>
-<p>When sweeping across the resolution array, the data points reveal an asymptotic capacity ceiling. This indicates that information packing limits within the hydrogenated nickelate matrix are fundamentally constrained by the geographic symmetry boundaries of the hosting octahedron.</p>
+<section id="heuristic-resolution-scaling-goal-4">
+<h2>Heuristic Resolution Scaling (Goal 4)<a class="headerlink" href="#heuristic-resolution-scaling-goal-4" title="Link to this heading"></a></h2>
+<p>The true Kolmogorov-Tikhomirov capacity associated with expansive tensor-network descriptions of the hidden state space remains, in principle, a tractable mathematical target, but it is computationally prohibitive for this initial proof of concept. For that reason, the present implementation does not claim an exact metric-entropy computation. Instead, Goal 4 reports a conductance-coupled heuristic resolution indicator built from the scalar observable used throughout the simulator.</p>
+<p>Under the baseline threshold, the legacy model yields a heuristic value close to 3.2581, while the quantum matrix formulation yields approximately 3.8501 for the same resolution boundary. When sweeping the resolution array, the indicator still exhibits a monotone ceiling-like trend as <span class="math notranslate nohighlight">\(\epsilon\)</span> narrows. The conservative interpretation is therefore not that the formal atomic capacity has been computed, but that the implemented proxy remains consistent with a richer hidden-state organization in the tensorially extended models.</p>
 </section>
 <section id="null-test-conservation-validation-goal-5">
 <h2>Null-Test Conservation Validation (Goal 5)<a class="headerlink" href="#null-test-conservation-validation-goal-5" title="Link to this heading"></a></h2>

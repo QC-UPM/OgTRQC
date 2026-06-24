@@ -28,15 +28,32 @@ The narrative thread of this Proof of Concept, inspired by the ideas presented b
 
 ## 2. Architecture & Design Patterns
 
-The project enforces a clean separation of concerns and high maintainability by strictly implementing the Model-View-Presenter design pattern alongside strong runtime typing. The architectural evolution of this suite utilizes a factory pattern within the presentation layer to dynamically bind one of five mathematical engines ranging from legacy phenomenological approximations to fully relaxed causal tensor spaces.
+The project enforces a clean separation of concerns and high maintainability by strictly implementing the Model-View-Presenter design pattern alongside strong runtime typing. The presentation layer can dynamically bind either legacy phenomenological engines, fixed-dimension quantum engines, or a scalable relaxed Hilbert-space engine that covers 2x2, 4x4, 8x8, and 16x16 configurations from the same computational core.
 
-The model layer encapsulates the core physical constants, the geometric state vector isolated in the material register structure, and the state history buffer for simulating delay pipelines. The quantum variant of the model replaces scalar approximations with full complex numpy arrays representing the local Hilbert space. The view layer handles localized console rendering and dynamic chart generation, isolating user dialogue structures across multiple languages. The presenter coordinates the execution cycle, passing external voltage profiles. Regarding the recoverability losses two approaches have been considered, either forcing them externally and feed them into the chosen mathematical model or implementing them to be estimated by inner engines (RelaxedQuantumModel and RelaxedCausalModel) in an iterative way. At the end of the day it will be possible capturing metrics, and routing translated summaries back to the view.
+The model layer encapsulates the core physical constants, the geometric state vector isolated in the material register structure, and the state history buffer for simulating delay pipelines. The quantum variant of the model replaces scalar approximations with full complex numpy arrays representing the local Hilbert space. The view layer handles localized console rendering and dynamic chart generation, isolating user dialogue structures across multiple languages. The presenter coordinates the execution cycle, passing external voltage profiles. Regarding the recoverability losses two approaches have been considered, either forcing them externally and feeding them into the chosen mathematical model or estimating them endogenously inside the scalable relaxed Hilbert engine. At the end of the day it will be possible capturing metrics, and routing translated summaries back to the view.
 
 
 ### Component Roles:
-* **Model (`OctaMemoryModel`)**: Encapsulates the core physical constants, the material register vector (`MaterialRegister`), the state history buffer for simulating delay pipelines, and the mathematical methods (CPTP map approximation, Kolmogorov entropy limits).
+* **Model (`OctaMemoryModel`)**: Encapsulates the core physical constants, the material register vector (`MaterialRegister`), the state history buffer for simulating delay pipelines, and the mathematical methods (CPTP map approximation and heuristic resolution estimation).
 * **View (`BaseView` / `CLIView`)**: Handles localized console rendering. It contains no business logic and isolates user dialogue structures across multiple languages via native key maps.
 * **Presenter (`SimulationPresenter`)**: Drives the execution cycle, passing external voltage profiles and recoverability losses into the model, capturing metrics, and routing translated summaries to the View.
+
+
+### Campaign Matrix
+
+| Alias | Hilbert space | Internal engine | Report folder |
+| :--- | :---: | :--- | :--- |
+| `legacy` | scalar proxy | `OctaMemoryModel` | `reports_legacy` |
+| `quantum` | `2x2` | `QuantumMemoryModel` | `reports_quantum` |
+| `causal` | `4x4` | `CausalSufficiencyModel` | `reports_causal` |
+| `relaxed_quantum` | `2x2` | `ScalableHilbertSpaceModel` via wrapper | `reports_relaxed_quantum` |
+| `relaxed_causal` | `4x4` | `ScalableHilbertSpaceModel` via wrapper | `reports_relaxed_causal` |
+| `extended_quantum` | `8x8` | `ScalableHilbertSpaceModel` via wrapper | `reports_extended_quantum` |
+| `extended_causal` | `8x8` | `ScalableHilbertSpaceModel` via wrapper | `reports_extended_causal` |
+| `scalable_relaxed --hilbert-dim 2` | `2x2` | `ScalableHilbertSpaceModel` | `reports_scalable_h2` |
+| `scalable_relaxed --hilbert-dim 4` | `4x4` | `ScalableHilbertSpaceModel` | `reports_scalable_h4` |
+| `scalable_relaxed --hilbert-dim 8` | `8x8` | `ScalableHilbertSpaceModel` | `reports_scalable_h8` |
+| `scalable_relaxed --hilbert-dim 16` | `16x16` | `ScalableHilbertSpaceModel` | `reports_scalable_h16` |
 
 ## 3. Core Features
 
@@ -73,7 +90,7 @@ classDiagram
     class IMemoryModel {
         <<interface>>
         +step(V_t, delta_0) dict
-        +calculate_capacity(epsilon) float
+        +estimate_resolution_heuristic(epsilon) float
         +get_state() dict
     }
 
@@ -92,27 +109,20 @@ classDiagram
         +step(V_t, delta_0) dict
     }
     
-    class RelaxedQuantumModel {
-        <<Endogenous Entropy>>
-        +step(V_t, delta_0) dict
-    }
-    
-    class RelaxedCausalModel {
-        <<Autonomous Renormalized>>
+    class ScalableHilbertSpaceModel {
+        <<Dimension-Scalable Relaxed>>
         +step(V_t, delta_0) dict
     }
 
     IMemoryModel <|.. OctaMemoryModel
     IMemoryModel <|.. QuantumMemoryModel
     IMemoryModel <|.. CausalSufficiencyModel
-    IMemoryModel <|.. RelaxedQuantumModel
-    IMemoryModel <|.. RelaxedCausalModel
+    IMemoryModel <|.. ScalableHilbertSpaceModel
     
     OctaMemoryModel --> MaterialRegister
     QuantumMemoryModel --> MaterialRegister
     CausalSufficiencyModel --> MaterialRegister
-    RelaxedQuantumModel --> MaterialRegister
-    RelaxedCausalModel --> MaterialRegister
+    ScalableHilbertSpaceModel --> MaterialRegister
 
     class SimulationPresenter {
         -IMemoryModel model
@@ -166,8 +176,8 @@ sequenceDiagram
         P ->> V: Output localized step telemetry
     end
     
-    P ->> M: calculate_capacity(epsilon bounds)
-    M -->> P: Return Kolmogorov memory capacity
+    P ->> M: estimate_resolution_heuristic(epsilon bounds)
+    M -->> P: Return heuristic resolution indicator
     P ->> V: render_results(final_state_summary)
     V -->> CLI: Generate HTML reports and Markdown tabular data
 ```
@@ -269,7 +279,7 @@ Goal 2: Recoverability-to-Geometry Coupling - Tracks the deformation path vector
 
 Goal 3: Delay as Protonic Latency - Utilizes an internal temporal array buffer pipeline to feed $J_{eff}(t_k) = J(t_k - d_{elay})$ back into the state transition mappings.
 
-Goal 4: Capacity Under Geometry Registers - Computes Kolmogorov-Tikhomirov $\epsilon$-entropy bounds using logarithmic classification tracking ($C_{atom}(\epsilon) = \log(N_\epsilon)$).
+Goal 4: Heuristic Resolution Under Geometry Registers - Reports a conductance-coupled heuristic scalar indicator as a computationally affordable proxy for resolution sensitivity at each $\epsilon$ threshold.
 
 Goal 5: Null-Test Preservation - Automatically loops an auxiliary system instance with $\Delta_0 = 0$ to assert complete preservation of the system state baseline profile.
 

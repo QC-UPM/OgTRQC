@@ -107,19 +107,23 @@ class CausalSufficiencyModel:
             "j_0": float(j_0)
         }
 
-    def calculate_capacity(self, epsilon: float) -> float:
-        """Calculates Kolmogorov-Tikhomirov capacity.
+    def estimate_resolution_heuristic(self, epsilon: float) -> float:
+        """Estimates a heuristic resolution indicator from the conductance proxy.
 
         Args:
             epsilon (float): Resolution bound metrics parameter.
 
         Returns:
-            float: Evaluated atomic information capacity value.
+            float: Heuristic scalar estimate used in the proof-of-concept reports.
         """
         if epsilon <= 0:
             epsilon = 1e-4
         n_epsilon = max(1, int(1.0 / (epsilon * (1.0 + abs(self.rho_scalar)))))
         return math.log(n_epsilon)
+
+    def calculate_capacity(self, epsilon: float) -> float:
+        """Backward-compatible alias for the heuristic resolution estimate."""
+        return self.estimate_resolution_heuristic(epsilon)
 
     def get_state(self) -> Dict[str, Any]:
         """Fetches complete structured inner representations without history buffers.

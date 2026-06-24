@@ -3,8 +3,8 @@
 # =============================================================================
 
 # Target directory path where interactive Plotly HTML reports will be stored
-output_directory: "./reports_extended_quantum/"
-engine: "extended_quantum"
+output_directory: "./reports_scalable_h8/"
+engine: "scalable_relaxed"
 
 # Number of discrete time steps (\Delta t) to execute in the coupling loop
 simulation_steps: 12
@@ -18,8 +18,8 @@ protonic_delay_steps: 3
 # Baseline resolution boundary parameter for localized console logging
 epsilon_bound: 0.02
 
-# Goal 4: Parametric resolution sweep for Kolmogorov-Tikhomirov entropy capacity analysis
-# The presenter will dynamically evaluate C_atom(\epsilon) = \log(N_\epsilon) for each value.
+# Goal 4: Parametric resolution sweep for the heuristic resolution indicator
+# The presenter evaluates a conductance-coupled scalar proxy instead of the formal Kolmogorov-Tikhomirov capacity.
 goal_4_epsilon_sweep:
   - 0.100   # Coarse resolution limit
   - 0.050   # Intermediate threshold
@@ -34,6 +34,7 @@ initial_rho: 1.0
 # Parámetros avanzados de entrelazamiento y ruido térmico (modelos extendidos y relajados)
 ni_transverse_hopping: 0.8
 dephasing_gamma: 0.05
+hilbert_dimension: 8
 proton_hopping_energy: 0.5
 inter_site_hopping: 0.2
 electron_proton_coupling: 1.2

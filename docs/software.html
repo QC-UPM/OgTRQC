@@ -7,7 +7,7 @@
   <title>Software Architecture and Engineering Blueprints &mdash; Octahedral gTRQC Simulation Suite 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/custom_upm.css" />
+      <link rel="stylesheet" type="text/css" href="_static/custom_upm.css?v=7c8f0086" />
 
   
   <!--[if lt IE 9]>
@@ -486,12 +486,14 @@ window.runMermaid = runMermaid;</script>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theoretical Framework: gTRQC in Heterostructures</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Software Architecture and Engineering Blueprints</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#engine-class-hierarchy-diagram">Engine Class Hierarchy Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#engine-campaign-matrix">Engine Campaign Matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#integration-flow-and-endogenous-entropy-derivation">Integration Flow and Endogenous Entropy Derivation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#execution-sequence-flow">Execution Sequence Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Simulated Data Diagnostics and Analytical Interpretation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="comparative.html">Comparative Analysis and Endogenous Recoverability Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cptp_evolution.html">Exact Unitary Evolution and CPTP Map Rigor</a></li>
 </ul>
 
         </div>
@@ -520,10 +522,72 @@ window.runMermaid = runMermaid;</script>
              
   <section id="software-architecture-and-engineering-blueprints">
 <h1>Software Architecture and Engineering Blueprints<a class="headerlink" href="#software-architecture-and-engineering-blueprints" title="Link to this heading"></a></h1>
-<p>The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The architectural evolution of this suite utilizes a factory pattern within the presentation layer to dynamically bind one of five mathematical engines, ranging from legacy phenomenological approximations to fully relaxed causal tensor spaces.</p>
+<p>The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The presentation layer can dynamically bind legacy phenomenological engines, fixed-dimension quantum engines, or a scalable relaxed Hilbert-space engine that spans 2x2, 4x4, 8x8, and 16x16 configurations from one computational core.</p>
 <section id="engine-class-hierarchy-diagram">
 <h2>Engine Class Hierarchy Diagram<a class="headerlink" href="#engine-class-hierarchy-diagram" title="Link to this heading"></a></h2>
 <p>The relationships, inherited structures, and operational boundaries of the software components are mapped out below, demonstrating the implementation of the multi-engine architecture.</p>
+</section>
+<section id="engine-campaign-matrix">
+<h2>Engine Campaign Matrix<a class="headerlink" href="#engine-campaign-matrix" title="Link to this heading"></a></h2>
+<p>The refactored execution layer distinguishes between user-facing campaign aliases and the effective engine implementation used internally.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Engine Alias Matrix</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 17.1%" />
+<col style="width: 34.1%" />
+<col style="width: 26.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>User-Facing Alias</p></th>
+<th class="head"><p>Hilbert Space</p></th>
+<th class="head"><p>Internal Implementation</p></th>
+<th class="head"><p>Default Output Folder</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy</span></code></p></td>
+<td><p>scalar proxy</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OctaMemoryModel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_legacy</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quantum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2x2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">QuantumMemoryModel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_quantum</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">causal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4x4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CausalSufficiencyModel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_causal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">relaxed_quantum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2x2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScalableHilbertSpaceModel</span></code> via compatibility wrapper</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_relaxed_quantum</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">relaxed_causal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4x4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScalableHilbertSpaceModel</span></code> via compatibility wrapper</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_relaxed_causal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">extended_quantum</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8x8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScalableHilbertSpaceModel</span></code> via compatibility wrapper</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_extended_quantum</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">extended_causal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8x8</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScalableHilbertSpaceModel</span></code> via compatibility wrapper</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_extended_causal</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scalable_relaxed</span></code></p></td>
+<td><p>configurable: <code class="docutils literal notranslate"><span class="pre">2x2</span></code>, <code class="docutils literal notranslate"><span class="pre">4x4</span></code>, <code class="docutils literal notranslate"><span class="pre">8x8</span></code>, <code class="docutils literal notranslate"><span class="pre">16x16</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ScalableHilbertSpaceModel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reports_scalable_h*</span></code></p></td>
+</tr>
+</tbody>
+</table>
 <pre  class="mermaid">
         classDiagram
    class MaterialRegister {
@@ -537,7 +601,7 @@ window.runMermaid = runMermaid;</script>
    class IMemoryModel {
        &lt;&lt;interface&gt;&gt;
        +step(V_t, delta_0) dict
-       +calculate_capacity(epsilon) float
+       +estimate_resolution_heuristic(epsilon) float
        +get_state() dict
    }
    class OctaMemoryModel {
@@ -552,24 +616,18 @@ window.runMermaid = runMermaid;</script>
        &lt;&lt;Expanded Tensor Space&gt;&gt;
        +step(V_t, delta_0) dict
    }
-   class RelaxedQuantumModel {
-       &lt;&lt;Endogenous Entropy&gt;&gt;
-       +step(V_t, delta_0) dict
-   }
-   class RelaxedCausalModel {
-       &lt;&lt;Autonomous Renormalized&gt;&gt;
+   class ScalableHilbertSpaceModel {
+       &lt;&lt;Dimension-Scalable Relaxed&gt;&gt;
        +step(V_t, delta_0) dict
    }
    IMemoryModel &lt;|.. OctaMemoryModel
    IMemoryModel &lt;|.. QuantumMemoryModel
    IMemoryModel &lt;|.. CausalSufficiencyModel
-   IMemoryModel &lt;|.. RelaxedQuantumModel
-   IMemoryModel &lt;|.. RelaxedCausalModel
+   IMemoryModel &lt;|.. ScalableHilbertSpaceModel
    OctaMemoryModel --&gt; MaterialRegister
    QuantumMemoryModel --&gt; MaterialRegister
    CausalSufficiencyModel --&gt; MaterialRegister
-   RelaxedQuantumModel --&gt; MaterialRegister
-   RelaxedCausalModel --&gt; MaterialRegister
+   ScalableHilbertSpaceModel --&gt; MaterialRegister
    class SimulationPresenter {
        -IMemoryModel model
        +run_simulation()
@@ -617,8 +675,8 @@ window.runMermaid = runMermaid;</script>
        M --&gt;&gt; P: Return observable thermodynamic metrics
        P -&gt;&gt; V: Output localized step telemetry
    end
-   P -&gt;&gt; M: calculate_capacity(epsilon bounds)
-   M --&gt;&gt; P: Return Kolmogorov memory capacity
+   P -&gt;&gt; M: estimate_resolution_heuristic(epsilon bounds)
+   M --&gt;&gt; P: Return heuristic resolution indicator
    P -&gt;&gt; V: render_results(final_state_summary)
    V --&gt;&gt; CLI: Generate HTML reports and Markdown tabular data
     </pre></section>
