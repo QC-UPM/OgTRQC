@@ -4,38 +4,44 @@
 ## 1. Initial Experimental Context Parameters
 | Parameter Configuration | Applied Value |
 | :--- | :--- |
-| Total Configured Simulation Steps | 6 |
+| Total Configured Simulation Steps | 12 |
 | G_oct Graphistic Stiffness Coefficient | 3.5 |
-| Protonic Latency Delay Steps ($d_{elay}$) | 2 |
+| Protonic Latency Delay Steps ($d_{elay}$) | 3 |
 | Base Resolution Boundary ($\epsilon$) | 0.02 |
 | Initial Boundary Coherence state ($\rho_{0}$) | 1.0 |
 
 ## 2. Matter-Geometry Quantum Coupling Timeline Trajectory
 | Step | Applied Voltage V(t) | Quantum Coherence (rho) | Octahedral Cage Distortion |
 | :---: | :---: | :---: | :---: |
-| 001 | 1.00 V | 0.0000 | 0.1298 |
-| 002 | 1.50 V | 0.0000 | 0.0909 |
-| 003 | 1.20 V | 0.0000 | 0.0617 |
-| 004 | 0.80 V | 0.0000 | 0.0405 |
-| 005 | 0.40 V | 0.0000 | 0.0256 |
-| 006 | 0.00 V | 0.0000 | 0.0155 |
+| 001 | 0.00 V | 0.0190 | 0.1334 |
+| 002 | 0.71 V | 0.1052 | 0.0990 |
+| 003 | 1.16 V | 0.2580 | 0.0734 |
+| 004 | 1.27 V | 0.4227 | 0.0543 |
+| 005 | 1.04 V | 0.5391 | 0.0399 |
+| 006 | 0.57 V | 0.5921 | 0.0289 |
+| 007 | 0.00 V | 0.6002 | 0.0206 |
+| 008 | 0.00 V | 0.5924 | 0.0143 |
+| 009 | 0.00 V | 0.5681 | 0.0096 |
+| 010 | 0.00 V | 0.5289 | 0.0063 |
+| 011 | 0.00 V | 0.4784 | 0.0040 |
+| 012 | 0.00 V | 0.4217 | 0.0025 |
 
 
 ## 3. Goal 4: Kolmogorov-Tikhomirov Entropy Capacity Bounds
 | Resolution Boundary Condition ($\epsilon$) | Atomic Memory Capacity $C_{{atom}}(\epsilon)$ |
 | :---: | :---: |
-| 0.100 | 2.3026 |
-| 0.050 | 2.9957 |
-| 0.020 | 3.9120 |
-| 0.010 | 4.6052 |
-| 0.005 | 5.2983 |
-| 0.002 | 6.2146 |
+| 0.100 | 1.9459 |
+| 0.050 | 2.6391 |
+| 0.020 | 3.5553 |
+| 0.010 | 4.2485 |
+| 0.005 | 4.9416 |
+| 0.002 | 5.8608 |
 
 
 ## 4. Terminal Octahedral Geometrical Register Metrics
-- **Final Quantum Matrix Proxy ($\rho_{final}$):** 0.0
-- **Octahedral Tilting Angle ($\theta_{tilt}$):** 0.012141
-- **Octahedral Rotation Angle ($\theta_{rot}$):** 0.003366
+- **Final Quantum Matrix Proxy ($\rho_{final}$):** 0.4217247002965384
+- **Octahedral Tilting Angle ($\theta_{tilt}$):** 0.002117
+- **Octahedral Rotation Angle ($\theta_{rot}$):** 0.000386
 - **Cage Volume Displacement ($\delta V_{oct}$):** 0.000000
 - **Ni-O-Ni Bond Angular Deviation ($\delta\phi$):** 0.030000
 - **Protonic Buffer Remanence Array:** None

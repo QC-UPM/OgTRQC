@@ -1,7 +1,9 @@
 """Relaxed Quantum Memory Integrator module for Octahedral gTRQC Simulation.
 
 This module implements a rigorous von Neumann integration with endogenous 
-recoverability loss calculation via relative entropy and Kraus operators.
+recoverability loss calculation via relative entropy. It guarantees completely
+positive trace-preserving maps by utilizing exact unitary matrix exponential
+evolution followed by proper Kraus operator application.
 """
 
 import math
@@ -16,15 +18,11 @@ class RelaxedQuantumModel:
 
     Models the 2x2 density matrix evolution explicitly calculating information 
     loss using relative entropy against a reference thermal shadow state, 
-    and applying geometric strain via a positive elastic operator.
+    applying geometric strain via a positive elastic operator, and ensuring
+    strict completely positive trace-preserving integration logic.
     """
 
     def __init__(self, config: Dict[str, Any]) -> None:
-        """Initializes the quantum space, Kraus operators, and elastic tensors.
-
-        Args:
-            config (Dict[str, Any]): Dictionary containing configuration variables.
-        """
         reg_conf = config.get("initial_register", {})
         self.k_0 = MaterialRegister(
             theta_tilt=float(reg_conf.get("theta_tilt", 0.1)),
@@ -41,57 +39,38 @@ class RelaxedQuantumModel:
         base_stiffness = float(config.get("g_oct_stiffness", 3.5))
         self.g_oct_operator = np.diag([base_stiffness, base_stiffness * 1.2, base_stiffness * 0.8])
         
+        self.ni_transverse_hopping = float(config.get("ni_transverse_hopping", 0.8))
+        self.dephasing_gamma = float(config.get("dephasing_gamma", 0.05))
+        
         self.op_ni_z = np.array([[1, 0], [0, -1]], dtype=complex)
         self.op_ni_x = np.array([[0, 1], [1, 0]], dtype=complex)
         
-        gamma = 0.05
-        self.kraus_0 = np.sqrt(1 - gamma) * np.eye(2, dtype=complex)
-        self.kraus_1 = np.sqrt(gamma) * self.op_ni_z
+        self.kraus_0 = np.sqrt(1 - self.dephasing_gamma) * np.eye(2, dtype=complex)
+        self.kraus_1 = np.sqrt(self.dephasing_gamma) * self.op_ni_z
 
     def _matrix_log(self, mat: np.ndarray, eps: float = 1e-9) -> np.ndarray:
-        """Computes the matrix logarithm using eigendecomposition.
-
-        Args:
-            mat (np.ndarray): Hermitian positive semi-definite matrix.
-            eps (float): Small epsilon to prevent logarithmic divergence.
-
-        Returns:
-            np.ndarray: Evaluated matrix logarithm.
-        """
         evals, evecs = np.linalg.eigh(mat)
         evals = np.maximum(evals, eps)
         return evecs @ np.diag(np.log(evals)) @ evecs.conj().T
 
+    def _exact_unitary_operator(self, hamiltonian: np.ndarray, dt: float) -> np.ndarray:
+        evals, evecs = np.linalg.eigh(hamiltonian)
+        unitary_diag = np.diag(np.exp(-1j * dt * evals))
+        return evecs @ unitary_diag @ evecs.conj().T
+
     def _relative_entropy(self, rho: np.ndarray, sigma: np.ndarray) -> float:
-        """Calculates von Neumann relative entropy between two density matrices.
-
-        Args:
-            rho (np.ndarray): Current physical state matrix.
-            sigma (np.ndarray): Reference or shadow state matrix.
-
-        Returns:
-            float: Evaluated relative entropy representing information loss.
-        """
         log_rho = self._matrix_log(rho)
         log_sigma = self._matrix_log(sigma)
         entropy = np.real(np.trace(rho @ (log_rho - log_sigma)))
         return max(0.0, float(entropy))
 
     def step(self, V_t: float, delta_0_external: float) -> Dict[str, float]:
-        """Evaluates one discrete step computing endogenous recoverability loss.
-
-        Args:
-            V_t (float): Externally applied time-dependent driving potential voltage.
-            delta_0_external (float): Ignored external proxy, maintained for interface compatibility.
-
-        Returns:
-            Dict[str, float]: Dictionary containing computed metrics at current frame.
-        """
         dt = 0.1
-        hamiltonian = V_t * self.op_ni_z
         
-        commutator = hamiltonian @ self.rho_matrix - self.rho_matrix @ hamiltonian
-        rho_unitary = self.rho_matrix - 1j * dt * commutator
+        hamiltonian = V_t * self.op_ni_z + self.ni_transverse_hopping * self.op_ni_x
+        
+        unitary_op = self._exact_unitary_operator(hamiltonian, dt)
+        rho_unitary = unitary_op @ self.rho_matrix @ unitary_op.conj().T
         
         self.rho_matrix = self.kraus_0 @ rho_unitary @ self.kraus_0.conj().T + \
                           self.kraus_1 @ rho_unitary @ self.kraus_1.conj().T
@@ -120,25 +99,12 @@ class RelaxedQuantumModel:
         }
 
     def calculate_capacity(self, epsilon: float) -> float:
-        """Calculates Kolmogorov-Tikhomirov capacity.
-
-        Args:
-            epsilon (float): Resolution bound metrics parameter.
-
-        Returns:
-            float: Evaluated atomic information capacity value.
-        """
         if epsilon <= 0:
             epsilon = 1e-4
         n_epsilon = max(1, int(1.0 / (epsilon * (1.0 + abs(self.rho_scalar)))))
         return math.log(n_epsilon)
 
     def get_state(self) -> Dict[str, Any]:
-        """Fetches complete structured inner representations.
-
-        Returns:
-            Dict[str, Any]: State snapshot mapping dictionary.
-        """
         return {
             "rho": self.rho_scalar,
             "register": asdict(self.k_0)

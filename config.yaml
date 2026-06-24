@@ -3,20 +3,17 @@
 # =============================================================================
 
 # Target directory path where interactive Plotly HTML reports will be stored
-output_directory: "./reports_relaxed_causal/"
-engine: "relaxed_causal"
-
-simulation_steps: 6
-g_oct_stiffness: 3.5
+output_directory: "./reports_extended_quantum/"
+engine: "extended_quantum"
 
 # Number of discrete time steps (\Delta t) to execute in the coupling loop
-simulation_steps: 6
+simulation_steps: 12
 
 # Graphistic response operator scaling parameter (G_oct stiffness matrix)
 g_oct_stiffness: 3.5
 
 # Non-Markovian temporal latency buffer length for protonic/lattice feedback (d_elay)
-protonic_delay_steps: 2
+protonic_delay_steps: 3
 
 # Baseline resolution boundary parameter for localized console logging
 epsilon_bound: 0.02
@@ -33,6 +30,13 @@ goal_4_epsilon_sweep:
 
 # Initial quantum matter proxy state (Density matrix track matrix bounds: [0.0, 1.0])
 initial_rho: 1.0
+
+# Parámetros avanzados de entrelazamiento y ruido térmico (modelos extendidos y relajados)
+ni_transverse_hopping: 0.8
+dephasing_gamma: 0.05
+proton_hopping_energy: 0.5
+inter_site_hopping: 0.2
+electron_proton_coupling: 1.2
 
 # Initial physical parameters representing the localized NiO6 octahedral cage structural register
 initial_register:

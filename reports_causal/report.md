@@ -4,21 +4,27 @@
 ## 1. Initial Experimental Context Parameters
 | Parameter Configuration | Applied Value |
 | :--- | :--- |
-| Total Configured Simulation Steps | 6 |
+| Total Configured Simulation Steps | 12 |
 | G_oct Graphistic Stiffness Coefficient | 3.5 |
-| Protonic Latency Delay Steps ($d_{elay}$) | 2 |
+| Protonic Latency Delay Steps ($d_{elay}$) | 3 |
 | Base Resolution Boundary ($\epsilon$) | 0.02 |
 | Initial Boundary Coherence state ($\rho_{0}$) | 1.0 |
 
 ## 2. Matter-Geometry Quantum Coupling Timeline Trajectory
 | Step | Applied Voltage V(t) | Quantum Coherence (rho) | Octahedral Cage Distortion |
 | :---: | :---: | :---: | :---: |
-| 001 | 1.00 V | 0.0000 | 0.1806 |
-| 002 | 1.50 V | 0.0000 | 0.1818 |
-| 003 | 1.20 V | 0.0000 | 0.1835 |
-| 004 | 0.80 V | 0.0000 | 0.1847 |
-| 005 | 0.40 V | 0.0000 | 0.1852 |
-| 006 | 0.00 V | 0.0000 | 0.1852 |
+| 001 | 0.00 V | 0.0000 | 0.1801 |
+| 002 | 0.71 V | 0.0000 | 0.1805 |
+| 003 | 1.16 V | 0.0000 | 0.1814 |
+| 004 | 1.27 V | 0.0000 | 0.1829 |
+| 005 | 1.04 V | 0.0000 | 0.1845 |
+| 006 | 0.57 V | 0.0000 | 0.1858 |
+| 007 | 0.00 V | 0.0000 | 0.1865 |
+| 008 | 0.00 V | 0.0000 | 0.1868 |
+| 009 | 0.00 V | 0.0000 | 0.1869 |
+| 010 | 0.00 V | 0.0000 | 0.1869 |
+| 011 | 0.00 V | 0.0000 | 0.1869 |
+| 012 | 0.00 V | 0.0000 | 0.1869 |
 
 
 ## 3. Goal 4: Kolmogorov-Tikhomirov Entropy Capacity Bounds
@@ -34,9 +40,9 @@
 
 ## 4. Terminal Octahedral Geometrical Register Metrics
 - **Final Quantum Matrix Proxy ($\rho_{final}$):** 0.0
-- **Octahedral Tilting Angle ($\theta_{tilt}$):** 0.109625
-- **Octahedral Rotation Angle ($\theta_{rot}$):** 0.054812
-- **Cage Volume Displacement ($\delta V_{oct}$):** -0.020751
+- **Octahedral Tilting Angle ($\theta_{tilt}$):** 0.106198
+- **Octahedral Rotation Angle ($\theta_{rot}$):** 0.053099
+- **Cage Volume Displacement ($\delta V_{oct}$):** -0.027604
 - **Ni-O-Ni Bond Angular Deviation ($\delta\phi$):** 0.030000
 - **Protonic Buffer Remanence Array:** []
 

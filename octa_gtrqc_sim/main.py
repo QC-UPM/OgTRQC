@@ -12,6 +12,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 import yaml
+import numpy as np
+
 from octa_gtrqc_sim.reports import PlotlyHtmlView, MarkdownReportView
 from octa_gtrqc_sim.quantum_integrator import QuantumMaterialCell
 from octa_gtrqc_sim.quantum_memory import QuantumMemoryModel
@@ -19,6 +21,7 @@ from octa_gtrqc_sim.material_register import MaterialRegister
 from octa_gtrqc_sim.causal_integrator import CausalSufficiencyModel
 from octa_gtrqc_sim.causal_recovery import RelaxedCausalModel
 from octa_gtrqc_sim.quantum_recovery import RelaxedQuantumModel
+from octa_gtrqc_sim.extended_recovery import ExtendedRelaxedCausalModel, ExtendedRelaxedQuantumModel
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -72,18 +75,9 @@ I18N_DICT: Dict[str, Dict[str, str]] = {
 
 
 class OctaMemoryModel:
-    """Mathematical execution framework representing the H_xNdNiO_3 material system.
-
-    Models the evolution of quantum matter coupled tightly to an octahedral physical geometry
-    register through CPTP mappings, delayed protonic interactions, and backreaction sources.
-    """
+    """Mathematical execution framework representing the H_xNdNiO_3 material system."""
 
     def __init__(self, config: Dict[str, Any]) -> None:
-        """Initializes the structural material register state and operators.
-
-        Args:
-            config (Dict[str, Any]): Dictionary containing configuration variables.
-        """
         reg_conf = config.get("initial_register", {})
         self.k_0 = MaterialRegister(
             theta_tilt=float(reg_conf.get("theta_tilt", 0.1)),
@@ -92,41 +86,23 @@ class OctaMemoryModel:
             delta_phi=float(reg_conf.get("delta_phi", 0.02)),
             epsilon_0=float(reg_conf.get("epsilon_0", 1.0))
         )
-        self.rho: float = float(config.get("initial_rho", 1.0))  # Proxy for density matrix track
-        self.g_oct: float = float(config.get("g_oct_stiffness", 2.5))  # Graphistic response scaling
-        self.delay: int = int(config.get("protonic_delay_steps", 2))  # Latency steps (d_elay)
+        self.rho: float = float(config.get("initial_rho", 1.0))
+        self.g_oct: float = float(config.get("g_oct_stiffness", 2.5))
+        self.delay: int = int(config.get("protonic_delay_steps", 2))
         self.delay_buffer: List[float] = [0.0] * self.delay
 
     def step(self, V_t: float, delta_0: float) -> Dict[str, float]:
-        """Evaluates one discrete step delta_t of the matter-geometry system.
-
-        Applies the delay history buffer, updates backreactions, alters the curvature register,
-        and applies a Completely Positive Trace-Preserving (CPTP) proxy update map on rho.
-
-        Args:
-            V_t (float): Externally applied time-dependent driving potential voltage.
-            delta_0 (float): Recoverability loss proxy value inside the functional space.
-
-        Returns:
-            Dict[str, float]: Dictionary containing computed metrics at current execution frame.
-        """
-        # Step 1: Handle non-Markovian feedback delay buffer logic (J_eff calculation)
         raw_source = delta_0 * self.g_oct
         self.delay_buffer.append(raw_source)
         j_eff = self.delay_buffer.pop(0)
 
-        # Step 2: Compute Backreaction source vector gradient surrogate
-        # J_0 = Grad_{k_0}(Delta_0). Simulating gradient interaction via linear projection.
         j_0 = j_eff * sum(self.k_0.to_vector())
 
-        # Step 3: Compute evolution of geometry register towards equilibrium: G_oct * delta_k0 = -J_0
         delta_k = -j_0 / (self.g_oct + 1e-9)
         self.k_0.theta_tilt += delta_k * 0.1
         self.k_0.theta_rot += delta_k * 0.05
         self.k_0.delta_V_oct += delta_k * 0.2
 
-        # Step 4: Apply CPTP Proxy Map to Matter State (rho updates bounded between 0.0 and 1.0)
-        # Structural deformation limits overall quantum phase coherence space
         structural_distortion = sum(abs(x) for x in self.k_0.to_vector()[:3])
         interaction_hamiltonian = 0.5 * V_t - 0.2 * structural_distortion
         
@@ -141,28 +117,12 @@ class OctaMemoryModel:
         }
 
     def calculate_capacity(self, epsilon: float) -> float:
-        """Calculates Kolmogorov-Tikhomirov capacity based on indistinguishable equivalence classes.
-
-        Calculates C_atom(epsilon) = log(N_epsilon).
-
-        Args:
-            epsilon (float): Resolution bound metrics parameter.
-
-        Returns:
-            float: Evaluated atomic information capacity value.
-        """
         if epsilon <= 0:
             epsilon = 1e-4
-        # Equivalent classes are inversely proportional to resolution boundary grid spacing
         n_epsilon = max(1, int(1.0 / (epsilon * (1.0 + abs(self.rho)))))
         return math.log(n_epsilon)
 
     def get_state(self) -> Dict[str, Any]:
-        """Fetches complete structured inner representations of variables.
-
-        Returns:
-            Dict[str, Any]: State snapshot mapping dictionary.
-        """
         return {
             "rho": self.rho,
             "register": asdict(self.k_0),
@@ -174,57 +134,35 @@ class OctaMemoryModel:
 # VIEW LAYER (MVP PATTERN)
 # =============================================================================
 class BaseView(ABC):
-    """Abstract Base View defining interface mechanisms for presentation interactions."""
-
     @abstractmethod
     def show_message(self, key: str, **kwargs: Any) -> None:
-        """Renders localized messages to output pipelines."""
         pass
 
     @abstractmethod
     def render_results(self, data: Dict[str, Any]) -> None:
-        """Outputs statistical metric summaries compiled across simulation targets."""
         pass
 
 
 class CLIView(BaseView):
-    """Command Line Interface implementation handling display operations and localization."""
-
     def __init__(self, lang: str = "en") -> None:
-        """Initializes language configurations fallback vectors.
-
-        Args:
-            lang (str): Language string selector ('en', 'es', 'fr', 'de').
-        """
         self.lang = lang if lang in I18N_DICT else "en"
         self.translations = I18N_DICT[self.lang]
 
     def show_message(self, key: str, **kwargs: Any) -> None:
-        """Formats and prints key lookup dictionaries values to standard output stream.
-
-        Args:
-            key (str): Key matching targeted phrase string.
-            **kwargs (Any): Dynamic interpolations formatting targets.
-        """
         template = self.translations.get(key, I18N_DICT["en"].get(key, f"Missing [{key}]"))
         print(template.format(**kwargs))
 
     def render_results(self, data: Dict[str, Any]) -> None:
-        """Displays formatted final states matrix summaries block structures.
-
-        Args:
-            data (Dict[str, Any]): Compiled presentation dataset blocks.
-        """
         print("\n" + "="*50)
         print(f" FINAL REPORT METRICS SUMMARY [Language: {self.lang.upper()}]")
         print("="*50)
         for k, v in data.items():
             if isinstance(v, dict):
-                print(f"- {k}:")
+                print(f"  {k}:")
                 for sub_k, sub_v in v.items():
-                    print(f"  * {sub_k}: {sub_v}")
+                    print(f"    {sub_k}: {sub_v}")
             else:
-                print(f"- {k}: {v}")
+                print(f"  {k}: {v}")
         print("="*50 + "\n")
 
 
@@ -232,15 +170,7 @@ class CLIView(BaseView):
 # PRESENTER LAYER (MVP PATTERN)
 # =============================================================================
 class SimulationPresenter:
-    """Coordinates and executes simulation workloads linking Models to Views cleanly."""
-
     def __init__(self, config: Dict[str, Any], view: BaseView) -> None:
-        """Binds structured dependencies engines configuration parameters.
-
-        Args:
-            config (Dict[str, Any]): Parsing dictionary containing runtime metrics parameters.
-            view (BaseView): View engine subclass complying with base interface blueprints.
-        """
         self.config = config
         self.view = view
         engine_type = self.config.get("engine", "legacy")
@@ -255,19 +185,36 @@ class SimulationPresenter:
             self.model = RelaxedQuantumModel(config)
         elif engine_type == "relaxed_causal":
             self.model = RelaxedCausalModel(config)
+        elif engine_type == "extended_quantum":
+            self.model = ExtendedRelaxedQuantumModel(config)
+        elif engine_type == "extended_causal":
+            self.model = ExtendedRelaxedCausalModel(config)
         else:
             self.view.show_message("error_invalid_engine", engine=engine_type)
             raise ValueError(f"Unrecognized mathematical integration engine: {engine_type}")
 
-    def run_simulation(self) -> None:
-        """Orchestrates structured test frameworks addressing document goals."""
-        self.view.show_message("welcome")
+    def _generate_analytical_profiles(self, steps: int) -> tuple[List[float], List[float]]:
+        voltage_profile = []
+        recoverability_profile = []
+        
+        for i in range(steps):
+            v = 1.5 * math.sin(math.pi * i / (steps / 2.0)) * math.exp(-i / (steps * 1.5))
+            voltage_profile.append(max(0.0, float(v)))
+            
+            delta = 0.3 * math.exp(-math.pow(i - (steps / 3.0), 2) / (steps * 0.5))
+            recoverability_profile.append(float(delta))
+            
+        return voltage_profile, recoverability_profile
 
-        # Goal 1 & 2: Structural Update Loop Coupling Dynamics Exploration
+    def run_simulation(self) -> None:
+        self.view.show_message("welcome")
         self.view.show_message("running_goal", goal="1 & 2", desc="Octahedral Register Construction & Geometric Coupling")
-        total_steps = self.config.get("simulation_steps", 5)
-        voltage_profile = self.config.get("voltage_profile", [1.0] * total_steps)
-        recoverability_loss = self.config.get("recoverability_loss_profile", [0.2] * total_steps)
+        
+        total_steps = self.config.get("simulation_steps", 6)
+        if not isinstance(total_steps, int) or total_steps <= 0:
+            total_steps = 6
+
+        voltage_profile, recoverability_loss = self._generate_analytical_profiles(total_steps)
 
         step_axis: List[int] = []
         history_voltages: List[float] = []
@@ -277,28 +224,24 @@ class SimulationPresenter:
         history_eff_sources: List[float] = []
 
         for i in range(total_steps):
-            v_t = voltage_profile[i] if i < len(voltage_profile) else 0.5
-            delta_0 = recoverability_loss[i] if i < len(recoverability_loss) else 0.1
+            v_t = voltage_profile[i]
+            delta_0 = recoverability_loss[i]
             
             metrics = self.model.step(v_t, delta_0)
             step_axis.append(i + 1)
             history_voltages.append(v_t)
             history_rhos.append(metrics["rho"])
             history_distortions.append(metrics["distortion"])
-            history_raw_sources.append(metrics.get("raw_source",0.0))
-            history_eff_sources.append(metrics.get("j_eff", metrics.get(
-                                                   "endogenous_delta", 0.0)))
+            history_raw_sources.append(metrics.get("raw_source", 0.0))
+            history_eff_sources.append(metrics.get("j_eff", metrics.get("endogenous_delta", 0.0)))
 
-            self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], 
-                                                    dist=metrics["distortion"])
+            self.view.show_message("sim_step", step=i+1, v=v_t, rho=metrics["rho"], dist=metrics["distortion"])
 
-        # Goal 4: Entropic Capacity Analysis Frameworks Execution
         self.view.show_message("running_goal", goal="4", desc="Capacity calculation under Geometry Registers")
         epsilon = float(self.config.get("epsilon_bound", 0.05))
         capacity = self.model.calculate_capacity(epsilon)
         self.view.show_message("capacity_res", eps=epsilon, cap=capacity)
 
-        # Goal 5: Structural Null-Test Preservation Analysis
         self.view.show_message("running_goal", goal="5", desc="Null-Test Preservation Verification")
         null_model = OctaMemoryModel(self.config)
         null_metrics = null_model.step(V_t=1.0, delta_0=0.0)
@@ -308,36 +251,23 @@ class SimulationPresenter:
         else:
             self.view.show_message("null_test_fail")
 
-        # Finish up and output final summaries metrics tables
         final_state = self.model.get_state()
         final_state["final_capacity_estimation"] = capacity
         self.view.render_results(final_state)
         self.view.show_message("done")
 
-        # Reporting 
         target_dir = self.config.get("output_directory", "reports")
         plotly_view = PlotlyHtmlView(output_dir=target_dir)
 
-        # Renderizar los HTMLs pasándole las listas 
-        # acumuladas durante el bucle
-        p1 = plotly_view.generate_goals_1_2_chart(step_axis, history_voltages, 
-                        history_rhos, history_distortions)
-        p2 = plotly_view.generate_goal_3_chart(step_axis, 
-                        history_raw_sources, history_eff_sources)
+        p1 = plotly_view.generate_goals_1_2_chart(step_axis, history_voltages, history_rhos, history_distortions)
+        p2 = plotly_view.generate_goal_3_chart(step_axis, history_raw_sources, history_eff_sources)
 
-        # Para la capacidad (Goal 4) se puede muestrear rápidamente 
-        # un barrido de epsilons:
-        eps_axis: List[float] = self.config.get("goal_4_epsilon_sweep", 
-                        [0.1, 0.05, 0.02, 0.01, 0.005])
-
-        # 2. Evaluamos la capacidad dinámica del modelo para cada resolución configurada
-        cap_axis: List[float] = [self.model.calculate_capacity(e) 
-                        for e in eps_axis]
+        eps_axis: List[float] = self.config.get("goal_4_epsilon_sweep", [0.1, 0.05, 0.02, 0.01, 0.005])
+        cap_axis: List[float] = [self.model.calculate_capacity(e) for e in eps_axis]
         p3 = plotly_view.generate_goal_4_chart(eps_axis, cap_axis)
         
         print(f"Interactive reports compiled successfully inside ./{plotly_view.output_dir}/ directory!")
-        eps_sweep = self.config.get("goal_4_epsilon_sweep", [0.1, 0.05, 0.02, 0.01])
-        capacity_results = {e: self.model.calculate_capacity(e) for e in eps_sweep}
+        capacity_results = {e: self.model.calculate_capacity(e) for e in eps_axis}
         md_logger = MarkdownReportView(output_dir=target_dir)
         md_file_created = md_logger.write_summary_report(
             config=self.config,
@@ -356,7 +286,6 @@ class SimulationPresenter:
 # RUNTIME PARSER ENTRY POINT
 # =============================================================================
 def main() -> None:
-    """Processes command line parameters options block arguments, building environments."""
     parser = argparse.ArgumentParser(
         description="CLI Suite for Octahedral gTRQC Hydrogenated Nickelate Memory Proof of Concept."
     )
@@ -373,32 +302,42 @@ def main() -> None:
         help="Target directory where interactive HTML chart reports will be saved."
     )
     parser.add_argument(
-        "-e", "--engine", type=str, default="legacy", choices=["legacy", 
-                                "quantum","causal","relaxed_quantum","relaxed_causal"],
+        "-e", "--engine", type=str, default=None, choices=["legacy", "quantum", "causal", 
+                    "relaxed_quantum", "relaxed_causal", "extended_quantum", "extended_causal"],
         help="Switches the underlying mathematical integration engine used for the simulation."
+    )
+    parser.add_argument(
+        "--hopping", type=float, default=None,
+        help="Transverse hopping parameter for the Nickel subsystem."
+    )
+    parser.add_argument(
+        "--gamma", type=float, default=None,
+        help="Dephasing gamma parameter for environmental Kraus operators."
     )
 
     args = parser.parse_args()
     view = CLIView(lang=args.lang)
 
-    # Establish baseline defaults parameters fallback values dictionary mappings
     default_config: Dict[str, Any] = {
-        "engine": args.engine,
+        "engine": "legacy",
         "output_directory": "reports",
         "simulation_steps": 6,
         "g_oct_stiffness": 3.0,
         "protonic_delay_steps": 2,
         "epsilon_bound": 0.02,
         "initial_rho": 1.0,
+        "ni_transverse_hopping": 0.8,
+        "dephasing_gamma": 0.05,
+        "proton_hopping_energy": 0.5,
+        "inter_site_hopping": 0.2,
+        "electron_proton_coupling": 1.2,
         "initial_register": {
             "theta_tilt": 0.12,
             "theta_rot": 0.06,
             "delta_V_oct": 0.0,
             "delta_phi": 0.03,
             "epsilon_0": 1.0
-        },
-        "voltage_profile": [1.0, 1.5, 1.2, 0.8, 0.4, 0.0],
-        "recoverability_loss_profile": [0.1, 0.2, 0.3, 0.2, 0.1, 0.0]
+        }
     }
 
     if args.config and os.path.exists(args.config):
@@ -408,11 +347,21 @@ def main() -> None:
             if user_config and isinstance(user_config, dict):
                 default_config.update(user_config)
 
-    # Initialize Presenter and run the suite simulation engine workloads
+    if args.engine is not None:
+        default_config["engine"] = args.engine
+        
+    if args.output is not None:
+        default_config["output_directory"] = args.output
+        
+    if args.hopping is not None:
+        default_config["ni_transverse_hopping"] = args.hopping
+        
+    if args.gamma is not None:
+        default_config["dephasing_gamma"] = args.gamma
+
     presenter = SimulationPresenter(config=default_config, view=view)
     presenter.run_simulation()
 
 
 if __name__ == "__main__":
     main()
-
