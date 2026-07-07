@@ -7,10 +7,11 @@ and explicit tensorial coupling for the geometric register.
 
 import math
 from collections import deque
-from typing import List, Dict, Any
+from typing import Any, Deque, Dict
 import numpy as np
 from dataclasses import dataclass, asdict
 from octa_gtrqc_sim.material_register import MaterialRegister
+from octa_gtrqc_sim.topology import get_topology
 
 
 class QuantumMemoryModel:
@@ -36,13 +37,22 @@ class QuantumMemoryModel:
             epsilon_0=float(reg_conf.get("epsilon_0", 1.0))
         )
         
-        self.rho_matrix: np.ndarray = np.array([[1.0, 0.0], [0.0, 0.0]], dtype=complex)
-        self.rho_scalar: float = float(config.get("initial_rho", 1.0))
+        initial_population = float(config.get("initial_density_population", config.get("initial_rho", 1.0)))
+        initial_population = min(1.0, max(0.0, initial_population))
+        self.rho_matrix: np.ndarray = np.array(
+            [[initial_population, 0.0], [0.0, 1.0 - initial_population]],
+            dtype=complex,
+        )
+        self.rho_scalar: float = float(config.get("initial_rho", initial_population))
         
         self.g_oct: float = float(config.get("g_oct_stiffness", 2.5))
         self.delay: int = int(config.get("protonic_delay_steps", 2))
+        self.time_step: float = max(float(config.get("time_step", 0.1)), 1e-9)
+        self.numerical_tolerance: float = max(float(config.get("numerical_tolerance", 1e-9)), 1e-12)
+        self.topology = get_topology(str(config.get("topology", "octa")))
+        self.topology_scale: float = self.topology.topology_scale()
         
-        self.delay_buffer: deque = deque([0.0] * max(1, self.delay), maxlen=max(1, self.delay))
+        self.delay_buffer: Deque[float] = deque([0.0] * max(1, self.delay), maxlen=max(1, self.delay))
 
     def step(self, V_t: float, delta_0: float) -> Dict[str, float]:
         """Evaluates one discrete step delta_t of the quantum-geometry system.
@@ -58,15 +68,15 @@ class QuantumMemoryModel:
         Returns:
             Dict[str, float]: Dictionary containing computed metrics at current frame.
         """
-        raw_source = delta_0 * self.g_oct
+        raw_source = delta_0 * self.g_oct * self.topology_scale
         
         self.delay_buffer.append(raw_source)
         j_eff = self.delay_buffer[0] 
         
         j_0 = j_eff * sum(self.k_0.to_vector())
         
-        dt = 0.1
-        delta_k = - (j_0 / (self.g_oct + 1e-9)) * dt
+        dt = self.time_step
+        delta_k = -(j_0 / (self.g_oct + self.numerical_tolerance)) * dt
         
         self.k_0.theta_tilt += delta_k * 0.1
         self.k_0.theta_rot += delta_k * 0.05
@@ -74,7 +84,7 @@ class QuantumMemoryModel:
         
         structural_distortion = sum(abs(x) for x in self.k_0.to_vector()[:3])
         
-        perturbation = np.array([
+        perturbation = self.topology_scale * np.array([
             [0, structural_distortion], 
             [structural_distortion, 0]
         ], dtype=complex)
@@ -86,7 +96,7 @@ class QuantumMemoryModel:
         self.rho_matrix = self.rho_matrix - 1j * dt * commutator
         
         trace = np.trace(self.rho_matrix)
-        if trace.real > 0:
+        if trace.real > self.numerical_tolerance:
             self.rho_matrix = self.rho_matrix / trace
             
         operator_current = np.array([[0, 1], [1, 0]], dtype=complex)
@@ -128,5 +138,7 @@ class QuantumMemoryModel:
         return {
             "rho": self.rho_scalar,
             "register": asdict(self.k_0),
-            "buffer": list(self.delay_buffer)
+            "buffer": list(self.delay_buffer),
+            "topology": self.topology.name,
+            "topology_scale": self.topology_scale
         }

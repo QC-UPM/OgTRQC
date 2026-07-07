@@ -7,6 +7,7 @@ from typing import Any, Dict, List
 import numpy as np
 
 from octa_gtrqc_sim.material_register import MaterialRegister
+from octa_gtrqc_sim.topology import get_topology
 
 
 class ScalableHilbertSpaceModel:
@@ -34,10 +35,16 @@ class ScalableHilbertSpaceModel:
         self.hidden_site_count = max(0, self.subsystem_count - 1)
         self.hilbert_dimension_label = f"{self.hilbert_dimension}x{self.hilbert_dimension}"
         self.engine_family = str(config.get("engine_family", "scalable_relaxed"))
+        self.topology = get_topology(str(config.get("topology", "octa")))
+        self.topology_scale = self.topology.topology_scale()
 
+        initial_population = float(config.get("initial_density_population", config.get("initial_rho", 1.0)))
+        initial_population = min(1.0, max(0.0, initial_population))
         self.rho_matrix = np.zeros((self.hilbert_dimension, self.hilbert_dimension), dtype=complex)
-        self.rho_matrix[0, 0] = 1.0
-        self.rho_scalar = float(config.get("initial_rho", 1.0))
+        self.rho_matrix[0, 0] = initial_population
+        if self.hilbert_dimension > 1:
+            self.rho_matrix[1, 1] = 1.0 - initial_population
+        self.rho_scalar = float(config.get("initial_rho", initial_population))
 
         base_stiffness = float(config.get("g_oct_stiffness", 3.5))
         self.g_oct_operator = np.diag(
@@ -49,6 +56,8 @@ class ScalableHilbertSpaceModel:
         self.inter_site_hopping = float(config.get("inter_site_hopping", 0.2))
         self.electron_proton_coupling = float(config.get("electron_proton_coupling", 1.2))
         self.dephasing_gamma = max(0.0, float(config.get("dephasing_gamma", 0.0)))
+        self.time_step = max(float(config.get("time_step", 0.1)), 1e-9)
+        self.numerical_tolerance = max(float(config.get("numerical_tolerance", 1e-9)), 1e-12)
 
         self.id2 = np.eye(2, dtype=complex)
         self.sigma_z = np.array([[1, 0], [0, -1]], dtype=complex)
@@ -93,8 +102,10 @@ class ScalableHilbertSpaceModel:
         hidden_dim = 2 ** self.hidden_site_count
         return np.eye(hidden_dim, dtype=complex) / hidden_dim
 
-    def _matrix_log(self, mat: np.ndarray, eps: float = 1e-9) -> np.ndarray:
+    def _matrix_log(self, mat: np.ndarray, eps: float | None = None) -> np.ndarray:
         evals, evecs = np.linalg.eigh(mat)
+        if eps is None:
+            eps = self.numerical_tolerance
         evals = np.maximum(evals, eps)
         return evecs @ np.diag(np.log(evals)) @ evecs.conj().T
 
@@ -128,21 +139,26 @@ class ScalableHilbertSpaceModel:
     def _build_total_hamiltonian(self, voltage: float) -> np.ndarray:
         h_total = voltage * self.op_ni_z + self.ni_transverse_hopping * self.op_ni_x
         if self.hidden_x_ops:
-            h_total = h_total + self.proton_hopping * sum(self.hidden_x_ops)
+            h_total = h_total + (self.proton_hopping * self.topology_scale) * sum(self.hidden_x_ops)
         if len(self.hidden_x_ops) >= 2:
+            topology_adjacency = self.topology.adjacency_matrix()
+            hidden_adjacency = topology_adjacency[1 : 1 + len(self.hidden_x_ops), 1 : 1 + len(self.hidden_x_ops)]
             adjacency_sum = np.zeros_like(h_total)
-            for left, right in zip(self.hidden_x_ops[:-1], self.hidden_x_ops[1:]):
-                adjacency_sum = adjacency_sum + (left @ right)
+            for left_index in range(len(self.hidden_x_ops)):
+                for right_index in range(left_index + 1, len(self.hidden_x_ops)):
+                    weight = hidden_adjacency[left_index, right_index]
+                    if weight != 0.0:
+                        adjacency_sum = adjacency_sum + weight * (self.hidden_x_ops[left_index] @ self.hidden_x_ops[right_index])
             h_total = h_total + self.inter_site_hopping * adjacency_sum
         if self.hidden_z_ops:
             interaction_sum = np.zeros_like(h_total)
             for hidden_z in self.hidden_z_ops:
                 interaction_sum = interaction_sum + (self.op_ni_z @ hidden_z)
-            h_total = h_total + self.electron_proton_coupling * interaction_sum
+            h_total = h_total + (self.electron_proton_coupling * self.topology_scale) * interaction_sum
         return h_total
 
     def step(self, V_t: float, delta_0_external: float) -> Dict[str, float]:
-        dt = 0.1
+        dt = self.time_step
         h_total = self._build_total_hamiltonian(V_t)
 
         unitary_op = self._exact_unitary_operator(h_total, dt)
@@ -157,7 +173,7 @@ class ScalableHilbertSpaceModel:
             self.rho_matrix = rho_unitary
 
         trace = np.real(np.trace(self.rho_matrix))
-        if trace > 0.0:
+        if trace > self.numerical_tolerance:
             self.rho_matrix = self.rho_matrix / trace
 
         shadow_state = self._build_shadow_state()
@@ -193,6 +209,8 @@ class ScalableHilbertSpaceModel:
     def get_state(self) -> Dict[str, Any]:
         return {
             "rho": self.rho_scalar,
+            "topology": self.topology.name,
+            "topology_scale": self.topology_scale,
             "register": asdict(self.k_0),
             "hilbert_dimension": self.hilbert_dimension,
             "hilbert_dimension_label": self.hilbert_dimension_label,

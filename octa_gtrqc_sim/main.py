@@ -23,6 +23,7 @@ from octa_gtrqc_sim.causal_recovery import RelaxedCausalModel
 from octa_gtrqc_sim.quantum_recovery import RelaxedQuantumModel
 from octa_gtrqc_sim.extended_recovery import ExtendedRelaxedCausalModel, ExtendedRelaxedQuantumModel
 from octa_gtrqc_sim.scalable_hilbert import ScalableHilbertSpaceModel
+from octa_gtrqc_sim.topology import available_topologies
 
 # =============================================================================
 # i18n TRANSLATIONS DICTIONARY
@@ -333,12 +334,17 @@ def main() -> None:
         "--hilbert-dim", type=int, default=None, choices=[2, 4, 8, 16],
         help="Explicit Hilbert-space dimension for the scalable relaxed engine."
     )
+    parser.add_argument(
+        "--topology", type=str, default=None, choices=list(available_topologies()),
+        help="Graph topology alias used by topology-aware reduced engines."
+    )
 
     args = parser.parse_args()
     view = CLIView(lang=args.lang)
 
     default_config: Dict[str, Any] = {
         "engine": "legacy",
+        "topology": "octa",
         "output_directory": "reports",
         "simulation_steps": 6,
         "g_oct_stiffness": 3.0,
@@ -378,6 +384,9 @@ def main() -> None:
         
     if args.gamma is not None:
         default_config["dephasing_gamma"] = args.gamma
+
+    if args.topology is not None:
+        default_config["topology"] = args.topology
 
     if args.hilbert_dim is not None:
         default_config["hilbert_dimension"] = args.hilbert_dim

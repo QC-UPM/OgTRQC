@@ -39,10 +39,12 @@ class CausalSufficiencyModel:
         self.rho_matrix[0, 0] = 1.0
         
         self.rho_scalar: float = float(config.get("initial_rho", 1.0))
+        self.time_step: float = max(float(config.get("time_step", 0.1)), 1e-9)
+        self.numerical_tolerance: float = max(float(config.get("numerical_tolerance", 1e-9)), 1e-12)
         self.g_oct: float = float(config.get("g_oct_stiffness", 2.5))
         
-        self.proton_hopping: float = 0.5
-        self.electron_proton_coupling: float = 1.2
+        self.proton_hopping: float = float(config.get("proton_hopping_energy", 0.5))
+        self.electron_proton_coupling: float = float(config.get("electron_proton_coupling", 1.2))
         
         sz = np.array([[1, 0], [0, -1]], dtype=complex)
         sx = np.array([[0, 1], [1, 0]], dtype=complex)
@@ -67,7 +69,7 @@ class CausalSufficiencyModel:
         Returns:
             Dict[str, float]: Dictionary containing computed metrics at current frame.
         """
-        dt = 0.1
+        dt = self.time_step
         
         h_ni = V_t * self.op_ni_z
         h_h = self.proton_hopping * self.op_h_x
@@ -79,7 +81,7 @@ class CausalSufficiencyModel:
         self.rho_matrix = self.rho_matrix - 1j * dt * commutator
         
         trace = np.real(np.trace(self.rho_matrix))
-        if trace > 0.0:
+        if trace > self.numerical_tolerance:
             self.rho_matrix = self.rho_matrix / trace
             
         proton_expectation = np.real(np.trace(self.rho_matrix @ self.op_h_z))
@@ -88,7 +90,7 @@ class CausalSufficiencyModel:
         j_eff = proton_expectation * raw_source
         j_0 = j_eff * sum(self.k_0.to_vector())
         
-        delta_k = - (j_0 / (self.g_oct + 1e-9)) * dt
+        delta_k = -(j_0 / (self.g_oct + self.numerical_tolerance)) * dt
         
         self.k_0.theta_tilt += delta_k * 0.1
         self.k_0.theta_rot += delta_k * 0.05
