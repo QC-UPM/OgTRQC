@@ -1,6 +1,13 @@
 Comparative Analysis and Endogenous Recoverability Validation
 =============================================================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 The comparative analysis of the data extracted from the generated reports reveals a profound shift in the interpretation of thermodynamic inertia when transitioning from externally driven models to endogenously relaxed architectures. When observing the coupling trajectory between matter and geometry, the original models exhibited a progressive and pronounced increase in the distortion of the octahedral cage. Conversely, both the relaxed quantum and relaxed causal models show a structural behavior where the geometric distortion does not accumulate, but rather decays significantly throughout the simulation steps, leading to a complete nullification of the final volume displacement.
 
 This mechanical relaxation confirms that the dissipation of quantum information exists and continues to operate on the system, but its real physical impact is governed by internal dynamics rather than empirically forced profiles. By expanding the Hilbert space and computing the recoverability defect through von Neumann relative entropy, the simulation demonstrates that the latent entanglement swiftly dilutes the purity of the visible electronic subspace. However, the resulting endogenous elastic force is fundamentally insufficient to maintain the crystal lattice in a state of permanent macroscopic torsion.

@@ -1,0 +1,338 @@
+[
+  {
+    "field_kV_cm": 133.0,
+    "model": "Single exponential",
+    "theta": [
+      -4.271120552477983,
+      1.1175590084042204
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0
+    ],
+    "nfev": 15,
+    "optimality": 0.0015832259874007293
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Stretched exponential",
+    "theta": [
+      -3.726696417411033,
+      1.2608375918999926,
+      -0.5046850780900078,
+      0.011688479014026032
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 8,
+    "optimality": 1.6997875984543356e-05
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Distributed relaxation",
+    "theta": [
+      -7.700622302521165,
+      1.1114458279762776,
+      -0.40989395882968416,
+      -0.12462633270648937,
+      0.6007983120986357,
+      1.3173938979746318
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 16,
+    "optimality": 5.590163188342102e-07
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Single exponential",
+    "theta": [
+      -4.282437957075962,
+      1.1412445179047588
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0
+    ],
+    "nfev": 15,
+    "optimality": 0.002301179010613965
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Stretched exponential",
+    "theta": [
+      -3.700714827751539,
+      1.2377404689752587,
+      -0.5017059865602583,
+      0.006540116109546026
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 7,
+    "optimality": 8.17274508097556e-05
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Distributed relaxation",
+    "theta": [
+      -7.365082875803539,
+      1.0979190795255946,
+      -0.7355409992338945,
+      0.3031131057101139,
+      0.7855258827481295,
+      0.945238186828691
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 80,
+    "optimality": 2.4588663792604774e-06
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Single exponential",
+    "theta": [
+      -4.30856953912262,
+      1.12950813358375
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0
+    ],
+    "nfev": 15,
+    "optimality": 0.002052833556121663
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Stretched exponential",
+    "theta": [
+      -3.7518381892683057,
+      1.2297568695525263,
+      -0.5010255941338246,
+      0.017275226242209323
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 7,
+    "optimality": 6.396034418193883e-05
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Distributed relaxation",
+    "theta": [
+      -7.182878408010897,
+      0.9058568823945008,
+      -0.19418560811696353,
+      -0.021849033239981715,
+      4.569993107189332,
+      1.1898235469130058
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 14,
+    "optimality": 6.5349958478377545e-06
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Single exponential",
+    "theta": [
+      -4.253579457552368,
+      1.2041794812242126
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0
+    ],
+    "nfev": 15,
+    "optimality": 0.0009290882290948206
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Stretched exponential",
+    "theta": [
+      -3.688184843387657,
+      1.3079137602631499,
+      -0.5075878516506721,
+      0.01005942359067774
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 7,
+    "optimality": 2.1575750044793905e-05
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Distributed relaxation",
+    "theta": [
+      -7.262406426111568,
+      0.9698094070252324,
+      -0.3065491237489298,
+      -0.12385179897717113,
+      2.681407850530029,
+      1.3412869197189938
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 14,
+    "optimality": 1.3553138817770727e-06
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Biexponential (six parameters)",
+    "theta": [
+      -6.220677569522986,
+      1.274848085189014,
+      -2.1555018297413677,
+      1.4965996699105641,
+      0.08127714422392605,
+      0.13166895608754792
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 21,
+    "optimality": 3.2602732941485487e-06
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Biexponential (six parameters)",
+    "theta": [
+      -6.084779897349322,
+      1.1235018530792997,
+      -2.0278805683799423,
+      1.3603266238684222,
+      0.1538497784659037,
+      0.052005518750495534
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 19,
+    "optimality": 6.588984584156488e-06
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Biexponential (six parameters)",
+    "theta": [
+      -6.193959438888715,
+      1.1167601681783528,
+      -2.1414420908771445,
+      1.3347556127091493,
+      0.10340548650993718,
+      0.044688330530537355
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 15,
+    "optimality": 2.62343323838326e-06
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Biexponential (six parameters)",
+    "theta": [
+      -6.117024808200621,
+      1.1918138818705384,
+      -2.043364482723244,
+      1.4365366558825867,
+      0.13707967733459248,
+      0.07357511939856996
+    ],
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "active_mask": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "nfev": 24,
+    "optimality": 9.33100947557392e-06
+  }
+]

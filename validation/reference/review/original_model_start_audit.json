@@ -1,0 +1,254 @@
+[
+  {
+    "field_kV_cm": 133.0,
+    "model": "Single exponential",
+    "start": 0,
+    "rss_difference": -1.3965815170990936e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Single exponential",
+    "start": 1,
+    "rss_difference": -1.3978928237179389e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Single exponential",
+    "start": 2,
+    "rss_difference": -1.397110427348025e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Stretched exponential",
+    "start": 0,
+    "rss_difference": -7.707168236947837e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Stretched exponential",
+    "start": 1,
+    "rss_difference": -7.510658761589184e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Stretched exponential",
+    "start": 2,
+    "rss_difference": -7.722711359292589e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Distributed relaxation",
+    "start": 0,
+    "rss_difference": 0.0,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Distributed relaxation",
+    "start": 1,
+    "rss_difference": 2.606248550307555e-14,
+    "success": true
+  },
+  {
+    "field_kV_cm": 133.0,
+    "model": "Distributed relaxation",
+    "start": 2,
+    "rss_difference": 1.532107773982716e-14,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Single exponential",
+    "start": 0,
+    "rss_difference": -2.641005725223522e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Single exponential",
+    "start": 1,
+    "rss_difference": -2.6416205223256384e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Single exponential",
+    "start": 2,
+    "rss_difference": -2.6399082031502985e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Stretched exponential",
+    "start": 0,
+    "rss_difference": -4.6832315803158053e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Stretched exponential",
+    "start": 1,
+    "rss_difference": -4.682787491105955e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Stretched exponential",
+    "start": 2,
+    "rss_difference": -4.683164966934328e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Distributed relaxation",
+    "start": 0,
+    "rss_difference": 0.0,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Distributed relaxation",
+    "start": 1,
+    "rss_difference": -6.572520305780927e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 267.0,
+    "model": "Distributed relaxation",
+    "start": 2,
+    "rss_difference": 3.195332887173663e-12,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Single exponential",
+    "start": 0,
+    "rss_difference": -2.245242392007185e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Single exponential",
+    "start": 1,
+    "rss_difference": -2.2452061543276614e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Single exponential",
+    "start": 2,
+    "rss_difference": -2.244792174366239e-08,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Stretched exponential",
+    "start": 0,
+    "rss_difference": -2.951505706505486e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Stretched exponential",
+    "start": 1,
+    "rss_difference": -2.951550115426471e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Stretched exponential",
+    "start": 2,
+    "rss_difference": -2.95158342211721e-11,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Distributed relaxation",
+    "start": 0,
+    "rss_difference": 0.0,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Distributed relaxation",
+    "start": 1,
+    "rss_difference": 4.4075854077618715e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 400.0,
+    "model": "Distributed relaxation",
+    "start": 2,
+    "rss_difference": -1.5942802633617248e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Single exponential",
+    "start": 0,
+    "rss_difference": -8.010985652617819e-09,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Single exponential",
+    "start": 1,
+    "rss_difference": -8.002076334889807e-09,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Single exponential",
+    "start": 2,
+    "rss_difference": -8.005052620774222e-09,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Stretched exponential",
+    "start": 0,
+    "rss_difference": -2.1596058275008545e-12,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Stretched exponential",
+    "start": 1,
+    "rss_difference": -2.1262991367621e-12,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Stretched exponential",
+    "start": 2,
+    "rss_difference": -2.156719247636829e-12,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Distributed relaxation",
+    "start": 0,
+    "rss_difference": 0.0,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Distributed relaxation",
+    "start": 1,
+    "rss_difference": 8.564260411958458e-13,
+    "success": true
+  },
+  {
+    "field_kV_cm": 533.0,
+    "model": "Distributed relaxation",
+    "start": 2,
+    "rss_difference": 2.2315482794965646e-13,
+    "success": true
+  }
+]

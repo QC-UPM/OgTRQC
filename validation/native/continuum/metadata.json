@@ -1,0 +1,12 @@
+{
+  "observed_order": 2.029075673889321,
+  "D_eff_m2_s": 1.8923456030341349e-19,
+  "uniform_gap_lower_s_1": 8.61618446887933e-05,
+  "entropy_derivative_s_1": -3.554791871680758e-05,
+  "scope": "Constant-field, spatially constant-D benchmark. Does not establish order two for the mesh-staggered full generator.",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  }
+}

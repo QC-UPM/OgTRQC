@@ -1,0 +1,29 @@
+{
+  "time_s": 596.2847939999439,
+  "L_m": 1e-07,
+  "T_K": 300.0,
+  "E_V_m": 200000.0,
+  "chi": 0.9698094585796684,
+  "orders": [
+    {
+      "case": "symmetric",
+      "all_grid_order": 2.0030854112507948,
+      "fine_grid_order": 2.007129324352044
+    },
+    {
+      "case": "ramp",
+      "all_grid_order": 1.001640068333472,
+      "fine_grid_order": 1.0003697143689563
+    }
+  ],
+  "uniform_bound_s_1": 2.718764030000985e-05,
+  "all_mesh_gaps_exceed_uniform_bound": true,
+  "max_mass_error": 1.085798118083403e-12,
+  "max_db_residual": 3.69712940817557e-16,
+  "original_full_generator_audit_Q_R_A": 0.000721655362771062,
+  "original_full_generator_audit_gap": 4.3518042730445334e-05,
+  "fine_reference_cells": 8192,
+  "reference_definition": "Smooth limit m_pi=0, same spatial c-dependent U and D; full finite-N coefficients retained in every test.",
+  "test_scope": "Frozen prescribed occupancy background; evolving normalized probability. Not nonlinear self-consistent transport or repaired crystallographic sublattices.",
+  "old_notebook_sha256": "3929eb8def57f4f883706baf2a099b7ad13c8fd6d6bf6cd793ff83afa03640ad"
+}

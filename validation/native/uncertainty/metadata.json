@@ -1,0 +1,17 @@
+{
+  "seed": 20261503,
+  "requested_replicates": 100,
+  "successful_replicates": 100,
+  "coverage": 1.0,
+  "mean_width": 0.24040776414017756,
+  "evaluation_only_rmse_interval": [
+    0.02281049958296223,
+    0.029500128220855952
+  ],
+  "scope": "Calibration-only pointwise residual bootstrap; not simultaneous bands or correlation-aware intervals.",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  }
+}

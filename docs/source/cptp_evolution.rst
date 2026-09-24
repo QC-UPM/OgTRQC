@@ -1,6 +1,13 @@
 Exact Unitary Evolution and CPTP Map Rigor
 ==========================================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 The initial proof of concept implementations employed an explicit Euler differential approximation to evaluate the von Neumann equation. While computationally economical, linear approximations fail to strictly preserve the underlying probability trace and positive semi-definite boundaries of quantum density matrices over extended integration windows or beneath rapidly fluctuating Hamiltonian potentials. 
 
 To overcome this vulnerability and satisfy the most stringent requirements of physical mathematical modeling, the relaxed integration engines (``RelaxedQuantumModel`` and ``RelaxedCausalModel``) were upgraded to deploy Exact Unitary Matrix Exponentials. By performing the eigendecomposition of the Hermitian Hamiltonian, the software explicitly calculates the matrix exponential representing the exact temporal evolution operator. Multiplying the state by this operator inherently protects the positivity boundary conditions prior to any environmental phase damping applied via Kraus operators, rendering the entire cycle a true Completely Positive Trace-Preserving (CPTP) map.

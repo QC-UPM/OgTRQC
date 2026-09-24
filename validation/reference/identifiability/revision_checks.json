@@ -1,0 +1,18 @@
+{
+  "reference_fit_reproduced": true,
+  "calibration_observations": 261,
+  "calibration_fields_kV_per_cm": [
+    133,
+    267,
+    400
+  ],
+  "holdout_observations_used": false,
+  "residual_variance_fixed_at_reference_fit": 0.002957618087953754,
+  "nominal_one_parameter_cutoff": 3.841458820694124,
+  "intervals_are_connected_component_near_reference": true,
+  "all_additional_endpoints_inside_original_bounds": true,
+  "source_notebook_sha256": "3929eb8def57f4f883706baf2a099b7ad13c8fd6d6bf6cd793ff83afa03640ad",
+  "numpy_version": "2.4.6",
+  "scipy_version": "1.18.1",
+  "interpretation": "Working Gaussian fixed-scale profile support; not global uniqueness or independent physical identification."
+}

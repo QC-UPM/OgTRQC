@@ -1,3 +1,5 @@
+# HISTORICAL PROTOTYPE CONFIGURATION: this file is consumed by the legacy CLI.
+# For the current proton-transport paper use `poetry run proton-study`; see VARIANTS.md.
 # =============================================================================
 # Octahedral gTRQC Hydrogenated Nickelate Memory Simulation Configuration
 # =============================================================================

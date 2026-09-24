@@ -1,0 +1,17 @@
+{
+  "source_notebook": "Hx_NdNiO3_single_cell_evidence_calibrated_PoC_v3_1(6).ipynb",
+  "source_sha256": "3929eb8def57f4f883706baf2a099b7ad13c8fd6d6bf6cd793ff83afa03640ad",
+  "embedded_matrix_sha256": "859f76869eb087bc05e0aba24f3543bddb90b03842d10bb49d0dc66d1814354a",
+  "numpy_version": "2.4.6",
+  "scipy_version": "1.18.1",
+  "chi_reference": 0.9698094070252324,
+  "E_A_eV": 0.17403869463781,
+  "k_B_eV_K": 8.617333262145179e-05,
+  "D_rep_m2_s": 1.3416407864998738e-18,
+  "analyses_are_new_revision_addendum": true,
+  "original_models_changed": false,
+  "optimizer_rule": "Original single starts/settings; biexponential uses three fixed starts chosen by training RSS.",
+  "information_criteria": "Working independent homoscedastic Gaussian likelihood; shared fitted variance counted; constants omitted; temporal correlation not modelled.",
+  "cross_validation_scope": "Retrospective whole-field refits; original 533 holdout not re-designated as four independent experiments.",
+  "sensitivity_scope": "Positive-barrier coefficient sector [0,2], user-model conditional stress range; not an empirical confidence interval. Frozen generators and smooth constant-D scaling only; risk ensembles not rerun."
+}

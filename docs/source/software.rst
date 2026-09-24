@@ -1,6 +1,13 @@
 Software Architecture and Engineering Blueprints
 ================================================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 The execution engine is structured using a strict Model-View-Presenter decoupling paradigm built on Python. This modular layout ensures that physical processing kernels remain completely isolated from standard terminal presentation views or persistence logging layers. The presentation layer can dynamically bind legacy phenomenological engines, fixed-dimension quantum engines, or a scalable relaxed Hilbert-space engine that spans 2x2, 4x4, 8x8, and 16x16 configurations from one computational core.
 
 Engine Class Hierarchy Diagram

@@ -1,0 +1,22 @@
+[
+  {
+    "case": "symmetric",
+    "reference_doubling_L2": 4.0316648411464386e-09,
+    "modal_truncation_L2": 2.139685226118914e-13,
+    "matrix_exponential_replay_L2": 3.393141839070187e-15
+  },
+  {
+    "case": "ramp",
+    "reference_doubling_L2": 4.7460536231952855e-09,
+    "modal_truncation_L2": 0.0,
+    "matrix_exponential_replay_L2": 2.6734264458635263e-14
+  },
+  {
+    "case": "symmetric",
+    "original_generator_relative_difference": 3.7577576421699327e-16
+  },
+  {
+    "case": "ramp",
+    "original_generator_relative_difference": 2.483637664455283e-16
+  }
+]

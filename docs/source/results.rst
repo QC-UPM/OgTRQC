@@ -1,6 +1,13 @@
 Simulated Data Diagnostics and Analytical Interpretation
 ========================================================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 Matter-Geometry Evolution Vector
 --------------------------------
 The actual data exported by the simulation run demonstrates the interaction between structural unit distortions and the decay trajectories of the quantum metrics. When utilizing the legacy phenomenological engine, driving the model with high potential fields initially reduces quantum coherence from an ideal state to a stabilized lower bound. This drop acts as an informational sink that distorts the local cage configuration with a noticeable delay, causing the structural distortion metric to scale upward sequentially from its baseline. This confirms that the crystal network stores structural evidence of previous state manipulations.

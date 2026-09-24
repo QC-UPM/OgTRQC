@@ -1,5 +1,8 @@
 # Robustness Study Summary
 
+> Historical prototype result. This report is not part of the current paper validation. See [VARIANTS.md](../VARIANTS.md) and [validation/](../validation/).
+
+
 This report documents a delay-focused sensitivity analysis for the `quantum` engine.
 Tested delay steps: 0, 1, 2, 5.
 

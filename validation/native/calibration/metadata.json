@@ -1,0 +1,127 @@
+{
+  "fits": [
+    {
+      "field_kv_cm": 533.0,
+      "model": "single",
+      "training_fields_kv_cm": [
+        133.0,
+        267.0,
+        400.0
+      ],
+      "theta": [
+        -4.253579457552368,
+        1.2041794812242126
+      ],
+      "success": true,
+      "nfev": 15
+    },
+    {
+      "field_kv_cm": 533.0,
+      "model": "stretched",
+      "training_fields_kv_cm": [
+        133.0,
+        267.0,
+        400.0
+      ],
+      "theta": [
+        -3.6881848432538744,
+        1.307913759678236,
+        -0.5075878511653719,
+        0.0100594209614542
+      ],
+      "success": true,
+      "nfev": 7
+    },
+    {
+      "field_kv_cm": 533.0,
+      "model": "distributed",
+      "training_fields_kv_cm": [
+        133.0,
+        267.0,
+        400.0
+      ],
+      "theta": [
+        -7.262406528902961,
+        0.969809430729769,
+        -0.30654909851884626,
+        -0.12385184853872645,
+        2.6814072674726446,
+        1.3412869689662494
+      ],
+      "success": true,
+      "nfev": 14
+    }
+  ],
+  "start_audit": [
+    {
+      "field_kv_cm": 533.0,
+      "model": "single",
+      "start": 0,
+      "sse": 6.364258447670989,
+      "success": true,
+      "theta": [
+        -4.253579457552368,
+        1.2041794812242126
+      ]
+    },
+    {
+      "field_kv_cm": 533.0,
+      "model": "stretched",
+      "start": 0,
+      "sse": 0.9628860234776265,
+      "success": true,
+      "theta": [
+        -3.6881848432538744,
+        1.307913759678236,
+        -0.5075878511653719,
+        0.0100594209614542
+      ]
+    },
+    {
+      "field_kv_cm": 533.0,
+      "model": "distributed",
+      "start": 0,
+      "sse": 0.754192612428174,
+      "success": true,
+      "theta": [
+        -7.262406528902961,
+        0.969809430729769,
+        -0.30654909851884626,
+        -0.12385184853872645,
+        2.6814072674726446,
+        1.3412869689662494
+      ]
+    }
+  ],
+  "provenance": {
+    "SEED": 20260802,
+    "SOURCE_DATA_DOI": "10.1038/s41467-024-49213-0",
+    "SOURCE_DATA_WORKBOOK_SHA256": "e8e7933e8648b49d115f6f20bb1752cce54c078dfdd21b3a8d433671043f5f2d",
+    "notebooks": {
+      "Hx_NdNiO3_single_cell_evidence_calibrated_PoC_v3_1.ipynb": {
+        "sha256": "3929eb8def57f4f883706baf2a099b7ad13c8fd6d6bf6cd793ff83afa03640ad",
+        "code_cells": 3
+      },
+      "proton_R2_5_identifiability.ipynb": {
+        "sha256": "590e161eddac4f0d22734fc005944849669bcc3a3159e17114463c64958fadca",
+        "code_cells": 1
+      },
+      "proton_R3_full_generator_audit.ipynb": {
+        "sha256": "db78d07c30a2ef7b03939ba3e3133afabaae33b1fc57a3d280da02c62b3d261e",
+        "code_cells": 2
+      },
+      "proton_review_addendum.ipynb": {
+        "sha256": "9159a6cb9f9300b7e731c12ecaf096650e5a1fcd40bec90aba729f3a92077a9c",
+        "code_cells": 1
+      }
+    },
+    "embedded_matrix_sha256": "859f76869eb087bc05e0aba24f3543bddb90b03842d10bb49d0dc66d1814354a"
+  },
+  "scope": "Strict 533 kV/cm holdout; calibration fields 133, 267, 400 only.",
+  "likelihood": "Working iid homoscedastic Gaussian; fitted variance counted. Temporal correlation is not modelled.",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  }
+}

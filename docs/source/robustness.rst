@@ -1,6 +1,13 @@
 Robustness Study Workflow
 =========================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 The repository includes a delay-focused robustness workflow for the ``quantum``
 engine. The purpose of this study is to probe whether the observed delay trend
 is stable under targeted one-at-a-time perturbations of the numerical and

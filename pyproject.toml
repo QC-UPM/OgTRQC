@@ -1,9 +1,18 @@
-[tool.poetry]
+[project]
 name = "octa-gtrqc-sim"
-version = "0.1.0"
-description = "Proof of Concept simulation for Octahedral gTRQC hydrogenated nickelate memory"
-authors = ["Joaquín Ordieres-Meré <j.ordieres@upm.es>"]
+version = "0.2.0"
+description = "Paper-aligned proton transport, polarization relaxation and recoverability studies for Hx-NdNiO3"
+authors = [{name = "Joaquín Ordieres-Meré", email = "j.ordieres@upm.es"}]
 readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dynamic = ["dependencies"]
+
+[tool.poetry]
+include = ["octa_gtrqc_sim/proton/data/*.json"]
+
+[project.scripts]
+proton-study = "octa_gtrqc_sim.proton.cli:main"
+proton-reference = "octa_gtrqc_sim.proton.reference:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -11,13 +20,18 @@ pyyaml = "^6.0.1"
 plotly = "^6.8.0"
 numpy = "^2.4.4"
 pandas = "^3.0.2"
+scipy = "^1.18.1"
+matplotlib = "^3.11.2"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.2.6"
 sphinx-rtd-theme = "^2.0.0"
 pytest = "^9.1.0"
 sphinxcontrib-mermaid = "^2.0.2"
+nbclient = "^0.11.0"
+ipykernel = "^7.3.0"
+nbformat = "^5.11.1"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0,<3.0"]
 build-backend = "poetry.core.masonry.api"

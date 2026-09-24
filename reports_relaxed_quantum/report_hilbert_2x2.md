@@ -1,4 +1,7 @@
 # Octahedral gTRQC Simulation Execution Summary Report
+
+> Historical prototype result. This report is not part of the current paper validation. See [VARIANTS.md](../VARIANTS.md) and [validation/](../validation/).
+
 **Target Application Core:** Hydrogenated Neodymium Nickelate ($H_xNdNiO_3$)
 **Hilbert Space Declaration:** 2x2
 

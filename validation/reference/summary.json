@@ -1,0 +1,80 @@
+{
+  "version": "v3.1",
+  "single_cell_design": true,
+  "seed": 20260802,
+  "literature_reference_count": 15,
+  "external_source_data": {
+    "DOI": "10.1038/s41467-024-49213-0",
+    "calibration_fields_kV_cm": [
+      133.0,
+      267.0,
+      400.0
+    ],
+    "holdout_field_kV_cm": 533.0,
+    "holdout_points": 87,
+    "holdout_RMSE": 0.026337244843421367,
+    "holdout_NRMSE_range": 0.030046825978758948,
+    "holdout_R2": 0.9908062001123051,
+    "RMSE_improvement_vs_stretched": 0.47275203457400894,
+    "predictive_interval_coverage": 1.0,
+    "holdout_RMSE_95_CI": [
+      0.022810499226793825,
+      0.029500127788272504
+    ]
+  },
+  "elastic_hessian": {
+    "K_A_eV_A2": 10.378420576116893,
+    "K_R_001_zero_strain_eV_A2": 36.66666666666667,
+    "condition_number": 3.532971746302613,
+    "LOO_RMS_relative_error_001": 0.07238381673893733,
+    "LOO_RMS_relative_error_111": 0.34603157329432765
+  },
+  "coupled_microscopic_model": {
+    "chi_A_fit": 0.9698094070252324,
+    "chi_A_profile_95_interval": [
+      0.8698094070252325,
+      1.1031427403585656
+    ],
+    "calibration_Jacobian_condition": 199.80999480191898,
+    "structural_rate_effect": 0.9265792194178106,
+    "recoverability_to_force_or_rate": 0.0
+  },
+  "matched_continuum": {
+    "D_eff_m2_s": 1.8923458000673497e-19,
+    "uniform_gap_lower_s_1": 8.616185366006431e-05,
+    "minimum_gap_to_bound_ratio": 2.1935390015624083,
+    "observed_order": 2.029075579470325,
+    "entropy_derivative": -3.554792241809815e-05
+  },
+  "recoverability": {
+    "fixed_independent_AUC": 0.9982131254061078,
+    "selected_baseline": "left-right imbalance",
+    "selected_baseline_AUC": 0.9972384665367121,
+    "AUC_difference_95_CI": [
+      0.0,
+      0.0030147366912186245
+    ],
+    "minimum_shift_AUC": 0.6450435729847495,
+    "mean_shift_AUC": 0.7774431569765963,
+    "quadratic_approximation_relative_error": 0.00023908040437668282,
+    "incremental_point_prediction_value": -0.011310527758808725
+  },
+  "hidden_twin_protocol": {
+    "selected_sensor": "right electrode",
+    "selected_duration_L2_over_D": 0.01,
+    "test_pairs": 277,
+    "median_SNR": 12.559673329336894,
+    "median_SNR_95_CI": [
+      11.078887690858116,
+      13.312689754971517
+    ],
+    "fraction_SNR_ge_3": 1.0,
+    "symmetric_control_median_SNR": 0.3967904328330415
+  },
+  "audit": {
+    "passed": 80,
+    "total": 80,
+    "terminology": "implementation, consistency, validation and declared-scope gates; not independent physical experiments"
+  },
+  "evidence_alignment_score_removed": true
+}

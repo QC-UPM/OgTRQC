@@ -1,6 +1,13 @@
 Theoretical Framework: gTRQC in Heterostructures
 ================================================
 
+.. warning::
+
+   Historical prototype documentation. These quantum-geometric engines and
+   their recoverability-to-force assumptions do not implement the current
+   proton-transport paper. See :doc:`paper_models` and :doc:`reproduction`.
+
+
 Generalized Time-Recoverable Quantum Control
 --------------------------------------------
 

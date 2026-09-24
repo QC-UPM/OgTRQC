@@ -1,0 +1,26 @@
+{
+  "reference_cells": 8192,
+  "duration_s": 596.2847939999439,
+  "numerical_checks": [
+    {
+      "case": "symmetric",
+      "reference_doubling_L2": 4.031145550585961e-09,
+      "modal_truncation_L2": 4.3621274339160586e-13,
+      "matrix_exponential_replay_L2": 7.590600307084454e-15
+    },
+    {
+      "case": "ramp",
+      "reference_doubling_L2": 4.757569210293339e-09,
+      "modal_truncation_L2": 0.0,
+      "matrix_exponential_replay_L2": 3.4267758932971323e-14
+    }
+  ],
+  "uniform_reference_bound_s_1": 2.718764030000987e-05,
+  "uniform_bound_scope": "R3 reference parameters at 300 K, zero strain, E=2e5 V/m, N>=16.",
+  "scope": "Frozen prescribed occupancy, evolving normalized probability. Smooth reference sets m_pi=0; finite test grids retain parity.",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  }
+}

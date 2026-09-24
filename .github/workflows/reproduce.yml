@@ -1,0 +1,33 @@
+name: Reproduce paper analyses
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install poetry==2.4.1
+      - run: poetry install --no-interaction
+      - run: poetry run proton-study --study all --output paper_results
+      - run: poetry run proton-reference --output reference_results
+      - run: poetry run python scripts/verify_migration.py --output paper_results/migration.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper-reproduction
+          path: |
+            paper_results/
+            reference_results/

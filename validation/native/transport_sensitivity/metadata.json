@@ -1,0 +1,9 @@
+{
+  "scope": "Conditional coefficient stress range [0,2]; frozen generators, no relaxation refit or nonlinear stability claim.",
+  "nominal_chi": 0.9698094585796684,
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.1"
+  }
+}
