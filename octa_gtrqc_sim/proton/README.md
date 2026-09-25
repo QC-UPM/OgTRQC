@@ -1,7 +1,7 @@
-# Paper-aligned implementation
+# Native supplement calculations
 
-This namespace implements the classical reduced-model framework of the supplied proton-transport paper. `structure.py` and `transport.py` provide physical models; `relaxation.py` fits the independent polarization readout; `diagnostics.py` evaluates information loss without feeding it back into dynamics.
+`structure.py` and `transport.py` implement the reduced physical models. `relaxation.py` fits the independent polarization readout. `diagnostics.py` evaluates recoverability without feeding it into dynamics.
 
-`studies.py`, `identifiability.py`, and `audits.py` compose reproducible protocols. `presentation.py` and `cli.py` implement Model–View–Presenter orchestration. `reference.py` replays the full original computational record independently of the native models. `dataset.py` verifies and loads the packaged experimental matrix in `data/`.
+`studies.py`, `identifiability.py` and `audits.py` implement numerical protocols. `presentation.py` and `cli.py` export their tables and diagnostic figures. `dataset.py` verifies the packaged experimental matrix. No notebook runner is required.
 
-See the root README and `VARIANTS.md` for execution commands, the boundary with historical modules, and the analyses retained only in full notebook replay.
+Use `poetry run proton-study --study all --output generated/native` for independent recalculation. The publication figure redraw is separate: see `scripts/export_publication_figures.py` and the root README.

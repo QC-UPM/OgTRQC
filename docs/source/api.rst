@@ -40,8 +40,5 @@ Presentation and reproducibility
 .. automodule:: octa_gtrqc_sim.proton.presentation
    :members:
 
-.. automodule:: octa_gtrqc_sim.proton.reference
-   :members:
-
 .. automodule:: octa_gtrqc_sim.proton.cli
    :members:

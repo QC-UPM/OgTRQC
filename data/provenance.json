@@ -1,0 +1,40 @@
+{
+  "scope": "External identities only; papers and source notebooks are not needed for generation.",
+  "external_documents": {
+    "manuscript_source": {
+      "filename": "main_2.tex",
+      "sha256": "16c8cfd2099ff92d3f1e57202abd740def3f15650e9ab33ab507368b5df30dca"
+    },
+    "reviewer_response": {
+      "filename": "R1.tex",
+      "sha256": "e2fcdf11c4bf4d79ef0e3a9514703715a2ba333375898cd5c5a4a4032058e609"
+    },
+    "poc2_archive": {
+      "filename": "poc2.zip",
+      "sha256": "207a27bef00ce59f450a457828ee8a08f2b7cd60aa36a7e9d363db20fee11afe"
+    },
+    "final_manuscript_pdf": {
+      "filename": "Proton.pdf",
+      "sha256": "2196bbc633ce4d4647ec4e5b1d5f27c704a4e6351ffa0caedd1435a055dadead"
+    }
+  },
+  "external_notebooks": {
+    "Hx_NdNiO3_single_cell_evidence_calibrated_PoC_v3_1.ipynb": {
+      "sha256": "3929eb8def57f4f883706baf2a099b7ad13c8fd6d6bf6cd793ff83afa03640ad",
+      "code_cells": 3
+    },
+    "proton_R2_5_identifiability.ipynb": {
+      "sha256": "590e161eddac4f0d22734fc005944849669bcc3a3159e17114463c64958fadca",
+      "code_cells": 1
+    },
+    "proton_R3_full_generator_audit.ipynb": {
+      "sha256": "db78d07c30a2ef7b03939ba3e3133afabaae33b1fc57a3d280da02c62b3d261e",
+      "code_cells": 2
+    },
+    "proton_review_addendum.ipynb": {
+      "sha256": "9159a6cb9f9300b7e731c12ecaf096650e5a1fcd40bec90aba729f3a92077a9c",
+      "code_cells": 1
+    }
+  },
+  "figure_inputs": "Reviewed R3 numeric plotting inputs; redraw only, not new synthetic experiments."
+}

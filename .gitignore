@@ -214,3 +214,6 @@ __marimo__/
 # Reproducible scientific outputs (compact verification records are tracked separately)
 paper_results/
 reference_results/
+
+# Independent supplement recalculation outputs
+generated/

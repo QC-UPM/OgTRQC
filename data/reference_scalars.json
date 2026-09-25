@@ -1,0 +1,14 @@
+{
+  "external_source_data": {
+    "holdout_RMSE": 0.026337244843421367,
+    "holdout_R2": 0.9908062001123051,
+    "holdout_RMSE_95_CI": [
+      0.022810499226793825,
+      0.029500127788272504
+    ],
+    "predictive_interval_coverage": 1.0
+  },
+  "matched_continuum": {
+    "observed_order": 2.029075579470325
+  }
+}

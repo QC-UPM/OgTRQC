@@ -1,10 +1,8 @@
 """Physical invariants and notebook-to-package regression checks."""
 
 from dataclasses import replace
-import ast
 import json
 from pathlib import Path
-from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -83,26 +81,14 @@ def test_transport_physical_invariants(n, case):
     assert result.sum() == pytest.approx(1., abs=1e-12)
 
 
-def test_generator_matches_original_notebook_function():
-    # Test-only extraction of one reviewed pure function, with explicit globals.
-    # Production code never loads or executes notebook source.
-    source = json.loads((ROOT / 'notebooks/reference/Hx_NdNiO3_single_cell_evidence_calibrated_PoC_v3_1.ipynb').read_text())
-    tree = ast.parse(''.join(source['cells'][0]['source']))
-    node = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'coupled_local_generator')
-    model = TransportModel()
-    st, cfg = model.structure, model.config
-    ns = dict(np=np, CFG=SimpleNamespace(length_m=cfg.length_m), Q_A_TARGET_A=st.q_a_unit,
-              Q_R_BULK_A=st.q_r_bulk_a, D_REP_M2_S=cfg.diffusivity_m2_s, EA_MODEL_EV=cfg.activation_ev,
-              KB_EV_K=KB_EV_K, T_REF_K=300., E_A_RELAX_EV=st.e_a, E_R_RELAX_EV_FU=st.e_r,
-              TRAP_FIT=SimpleNamespace(x=[0., cfg.chi_transport]))
-    exec(compile(ast.Module(body=[node], type_ignores=[]), '<reference generator>', 'exec'), ns)
-    c = .3 + .12 * np.cos(2 * np.pi * (np.arange(32) + .5) / 32) + .05 * (-1.)**np.arange(32)
-    original, qa, potential, qr, _ = ns['coupled_local_generator'](c, 300., 2e5, 0.)
-    migrated = model.freeze(c)
-    np.testing.assert_allclose(migrated.matrix.toarray(), original, rtol=3e-15, atol=1e-18)
-    np.testing.assert_allclose(migrated.q_a, qa)
-    np.testing.assert_allclose(migrated.potential_ev, potential)
-    assert migrated.q_r == pytest.approx(qr)
+def test_generator_matches_independent_numeric_reference():
+    # Fixture exported from the external reviewed generator before source removal.
+    with np.load(ROOT / 'data/generator_reference.npz') as recorded:
+        migrated = TransportModel().freeze(recorded['occupancy'])
+        np.testing.assert_allclose(migrated.matrix.toarray(), recorded['matrix'], rtol=3e-15, atol=1e-18)
+        np.testing.assert_allclose(migrated.q_a, recorded['q_a'])
+        np.testing.assert_allclose(migrated.potential_ev, recorded['potential_ev'])
+        assert migrated.q_r == pytest.approx(float(recorded['q_r']))
 
 
 def test_recoverability_is_diagnostic_only_and_reflection_invariant():

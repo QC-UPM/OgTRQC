@@ -74,16 +74,7 @@ Artifact lifecycle
        PaperPresenter->>ArtifactView: render(result)
        ArtifactView-->>User: CSV, JSON, NPZ, PDF/SVG, manifest
 
-``ReferenceNotebookRunner`` is a separate reproducibility adapter. It verifies
-archived source hashes and executes original notebooks in isolated directories
-using the Poetry interpreter. Native model execution never evaluates notebook
-source. The notebook archive retains historical terminology and the complete
-computational record rather than silently rewriting its scientific claims.
-
-Extension points
-----------------
-
-Implement ``StudyView.render`` for another presentation channel. A future
-Model Context Protocol adapter can call the presenter or models without
-changing the numerical laws. This implementation provides MVP and a CLI;
-it does not expose an MCP network server.
+Publication figure generation is independent of the native study presenter.
+``scripts/export_publication_figures.py`` redraws reviewed numeric inputs;
+``scripts/render_supplement.py`` embeds tables and profiles in the LaTeX source.
+The build needs neither original notebooks nor a manuscript file.

@@ -1,0 +1,27 @@
+{
+  "generator": "scripts/export_publication_figures.py",
+  "scope": "Recorded-evidence redraw; no refitting or synthetic protocol rerun.",
+  "files": {
+    "proton_full_convergence.pdf": "c35c29c03edd6bb5206534213deb41a8ca549b2500a24c9952b6e0eb5b8a2474",
+    "proton_full_convergence.png": "a477591a318fba74e6876ab9f2587664619a3d2fb7246f16ddf511c3fe2b51e6",
+    "proton_full_convergence.svg": "b5777e93bbb66107fc6e0aa68a0db60c9c88644340578e81c38f6b02e1382b9e",
+    "proton_full_gaps.pdf": "7fcbbbc4279a97787999adb1f196f1f4209398145598218ced13bc9902d3495c",
+    "proton_full_gaps.png": "b86f6071018dc0373fbaad3da69f06d822ab1ba6c26dfd90b71931ee8f4745f4",
+    "proton_full_gaps.svg": "f80dc352da6299f48085015f9c1dfc3e7da55811ef3c5f3168a86dc4def2ab19",
+    "proton_holdout.pdf": "9dba04f114ab580d28cd93abb5089a307c830a81690f3e1e0261a7e7d1069e26",
+    "proton_holdout.png": "3be7d1a5e33ae785d9798e8c64b23cf0ef9fb76c0b7dc4b9033bd79d634e9264",
+    "proton_holdout.svg": "85e5088adc225748072e4a54e56752151cd2e85c4faf79224a8fdb1d9df86173",
+    "supp_hidden_twins.pdf": "08acf30b56feb98f391a951f9e1c5b92422926546e5988a0269d8612f3b923bd",
+    "supp_hidden_twins.png": "32c5a8cb34a22191c04f41b8eb2c93b08544b5a114865c7f4647749f1bddb6df",
+    "supp_hidden_twins.svg": "3e2b1f6d6dcaee27c694c327f822b40dcf43ca56ceb4fbdaf9e015f41916a0e5",
+    "supp_polarization_residuals.pdf": "436c405597d87df33db5888f554179f98fb29daf4da65c1b53a3ca48595996a6",
+    "supp_polarization_residuals.png": "087fdf843c889f65f56305c147b87a85f21452a8f3217071d7ccae4d8039010b",
+    "supp_polarization_residuals.svg": "39b95dc07978dc4d6122df72963800cb9e48d89ef8788844dee414858f966fba",
+    "supp_recoverability_transfer.pdf": "43d477bbcd5215d1648b0e19789c78df060e944ffabfebd0743c5df289ffe49f",
+    "supp_recoverability_transfer.png": "c6e38bfd3ef002699cfb578c41f2454628651476c0c5e90751784a41affd0e02",
+    "supp_recoverability_transfer.svg": "e02dcb19cb52f0f1e0dbfd496684e5ce336b5e9b173967e1c1ba896a66edbd67",
+    "supp_structural_curvature.pdf": "2296c81e66c5892ff135a00e4188d50d8f7012b4a1a5b34459b84ecf8bad9d1e",
+    "supp_structural_curvature.png": "b1b09c61b0d2c2d71842510187a21dab3593b65c915220d4bc533d7138032e84",
+    "supp_structural_curvature.svg": "60464b3d453d87135d824bc7079aa691d3db8164173ceac176c831fa21314cb6"
+  }
+}

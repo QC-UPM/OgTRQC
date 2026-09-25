@@ -1,4 +1,4 @@
-name: Reproduce paper analyses
+name: Recalculate supplement analyses
 
 on:
   workflow_dispatch:
@@ -21,13 +21,11 @@ jobs:
           python-version: '3.12'
       - run: pip install poetry==2.4.1
       - run: poetry install --no-interaction
-      - run: poetry run proton-study --study all --output paper_results
-      - run: poetry run proton-reference --output reference_results
-      - run: poetry run python scripts/verify_migration.py --output paper_results/migration.json
+      - run: poetry run proton-study --study all --output generated/native
+      - run: poetry run python scripts/verify_migration.py --output generated/native/migration.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: paper-reproduction
+          name: supplement-recalculation
           path: |
-            paper_results/
-            reference_results/
+            generated/

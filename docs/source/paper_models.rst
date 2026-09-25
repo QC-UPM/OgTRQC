@@ -103,8 +103,8 @@ Mean projection discards direction: reflected profiles have equal mean and
 recoverability but can produce different directed future observations. This
 quantity is absent from free energy, force, rates, and the polarization law.
 
-The larger synthetic risk, ablation, protocol-transfer, and hidden-twin sensor
-experiments remain executable through the archived v3.1 notebook. The native
+The larger synthetic protocol-transfer and hidden-twin results are retained as
+numeric figure inputs; the full original campaigns remain external. The native
 ``hidden_state`` example is explicitly smaller and is not used to claim the
 notebook's AUC or signal-to-noise results.
 

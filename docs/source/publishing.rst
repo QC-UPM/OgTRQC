@@ -46,6 +46,6 @@ Reproducibility workflow
 ------------------------
 
 ``.github/workflows/reproduce.yml`` is a manually dispatched workflow that
-executes the full native campaign and all four reference notebooks, then
-uploads results for inspection. It does not publish manuscript changes or
+executes the full native campaign and compares it with retained numeric
+reference results, then uploads the generated results for inspection. It does not publish manuscript changes or
 replace the primary holdout with retrospective fits.

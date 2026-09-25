@@ -25,7 +25,7 @@ jobs:
         run: pip install poetry==2.4.1
       - name: Install locked environment
         run: poetry install --no-interaction
-      - name: Test models and notebook parity
+      - name: Test supplement models and numeric reference agreement
         run: poetry run pytest -q
       - name: Build Sphinx documentation
         run: poetry run sphinx-build -b html -W --keep-going docs/source docs/_build/html

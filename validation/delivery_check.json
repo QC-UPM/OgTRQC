@@ -1,0 +1,33 @@
+{
+  "scope": "Clean delivery extraction using the installed Poetry interpreter; no original papers or notebooks present.",
+  "verified_files": 165,
+  "commands": [
+    [
+      "-m",
+      "pytest",
+      "-q"
+    ],
+    [
+      "scripts/build_supplement.py",
+      "--no-package"
+    ],
+    [
+      "-m",
+      "octa_gtrqc_sim.proton.cli",
+      "--study",
+      "all",
+      "--output",
+      "generated/native"
+    ],
+    [
+      "scripts/verify_results.py",
+      "--native",
+      "generated/native"
+    ]
+  ],
+  "all_passed": true,
+  "native_recalculation": true,
+  "tested_archive_sha256": "f3ce3f29970e3eedf53da7f7371347bc42fbc70351786c4cc2fdbe79f0529a03",
+  "numeric_comparisons": 20,
+  "numeric_comparisons_passed": true
+}
