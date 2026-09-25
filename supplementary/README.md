@@ -15,3 +15,5 @@ For Overleaf, import `dist/supplementary-overleaf.zip`, choose **supplementary.t
 Edit narrative directly in `supplementary.tex`. Named `BEGIN GENERATED` blocks are refreshed from recorded data; edits inside them will be overwritten. `--no-refresh` preserves those blocks and existing figures during compilation.
 
 Figures for transfer and hidden twins redraw recorded synthetic results; the build does not rerun the full synthetic experiments. Papers and source notebooks remain external, identified by hashes only.
+
+The original constant-D benchmark has order 2.029. The separate full frozen-generator audit has order 2.003 for the symmetric background and 1.002 for the gradient background. A positive spectral gap neither removes the mesh dependence of parity nor establishes stability of the nonlinear problem with evolving occupancies.

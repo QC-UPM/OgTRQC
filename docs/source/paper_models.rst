@@ -61,8 +61,13 @@ Two convergence experiments must remain distinct:
   regression target is the paper's approximately 2.029 order against N=512.
 * ``refinement`` retains structure-dependent site energies and barriers on
   each finite grid. Its smooth-limit reference sets only the parity statistic
-  to zero. Symmetric and gradient backgrounds have different convergence
-  behavior; the alternating-grid counterexample is exported explicitly.
+  to zero. The observed orders are 2.003 for the symmetric background and
+  1.002 for the gradient background; the alternating-grid counterexample is
+  exported explicitly. These are distinct from the constant-D order of 2.029.
+
+A positive spectral gap concerns relaxation of a frozen generator. It neither
+removes the mesh dependence of the parity statistic nor establishes stability
+of the nonlinear problem with evolving occupancies.
 
 Polarization relaxation
 -------------------------

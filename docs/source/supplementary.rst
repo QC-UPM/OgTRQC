@@ -24,3 +24,9 @@ synthetic recoverability transfer and hidden-twin separation. The remaining
 three figures show the four-model holdout, full-generator refinement and gaps.
 Synthetic figures redraw retained outputs without rerunning the original full
 ensemble or sensor-selection protocols.
+
+The original constant-D benchmark has order 2.029. The separate full
+frozen-generator audit has orders 2.003 for the symmetric background and 1.002
+for the gradient background. A positive spectral gap neither removes the mesh
+dependence of parity nor establishes nonlinear stability with evolving
+occupancies.
